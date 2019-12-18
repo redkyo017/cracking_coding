@@ -1,7 +1,12 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"./src/arraystrings"
+)
 
 func main() {
+	arraystrings.IsUnique()
 	log.Println("HELLO CON CO")
 }
