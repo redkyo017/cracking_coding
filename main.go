@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	log.Println(arraystrings.IsUniqueStringBitwise("qwertyuikj"))
+	log.Println(arraystrings.CheckPermutation("qwertyuikj", "qwertyuikj"))
 }
