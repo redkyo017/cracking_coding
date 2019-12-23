@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	log.Println(arraystrings.CheckPermutation("qwertyuikj", "qwertyuikj"))
+	log.Println(arraystrings.CheckPermutation("abcd", "cdaf"))
 }
