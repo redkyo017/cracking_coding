@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	log.Println(arraystrings.IsPermutationOfPalindrome("abc  fba"))
+	log.Println(arraystrings.OneEditAway("pales", "pale"))
 }

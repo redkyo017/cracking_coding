@@ -1,5 +1,9 @@
 package arraystrings
 
+import (
+	"log"
+)
+
 func IsPermutationOfPalindrome(str string) bool {
 	// solution 1: hashmap to count max one odd characters
 	// frequentMaps := map[string]int{}
@@ -17,7 +21,7 @@ func IsPermutationOfPalindrome(str string) bool {
 	// }
 	// return true
 
-	// solution 2: use array int to count
+	// // solution 2: use array int to count
 	// countOdd := 0
 	// countTable := make([]int, 255)
 	// for _, v := range str {
@@ -30,17 +34,24 @@ func IsPermutationOfPalindrome(str string) bool {
 	// }
 	// return countOdd <= 1
 
-	// bit = 1011 && 0100 == 0 => bit = 1011 |= 0100 = 1111
-	// bit = 1011 && 1000 == 1000 => bit = 1011 &= ~1000(0111) = 0011
+	// solution 3: bitwise
 	bitVector := 0
+	var aChar uint = 97
 	for _, v := range str {
-		mask := 1 << uint(v)
+		index := uint(v) - aChar
+		if index < 0 {
+			break
+		}
+
+		mask := 1 << index
 		if bitVector&mask == 0 {
 			bitVector |= mask
 		} else {
 			bitVector &= ^mask
 		}
+		log.Printf("con co %b", bitVector)
 	}
+	log.Println(bitVector == 0, (bitVector&(bitVector-1) == 0))
 	return bitVector == 0 || (bitVector&(bitVector-1) == 0)
 	// return true
 }
