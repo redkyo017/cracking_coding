@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	log.Println(arraystrings.OneEditAway("pales", "pale"))
+	log.Println(arraystrings.OneEditAway("pales", "bales"))
 }

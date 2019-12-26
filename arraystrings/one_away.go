@@ -49,6 +49,28 @@ func OneEditAway(s1 string, s2 string) bool {
 		}
 		index2++
 	}
+	// solution 2.1
+	// foundDifferent := false
+	// index1, index2 := 0, 0
+	// for index1 < len(s1) && index2 < len(s2) {
+	// 	if s1[index1] != s2[index2] {
+	// 		if foundDifferent {
+	// 			return false
+	// 		}
+	// 		foundDifferent = true
+	// 		if len(s1) > len(s2) {
+	// 			index1++
+	// 		} else if len(s1) < len(s2) {
+	// 			index2++
+	// 		} else {
+	// 			index1++
+	// 			index2++
+	// 		}
+	// 	} else {
+	// 		index1++
+	// 		index2++
+	// 	}
+	// }
 	return true
 }
 
