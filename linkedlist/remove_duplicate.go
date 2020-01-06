@@ -14,6 +14,7 @@ func RemoveDup(node LinkedListNode) LinkedListNode {
 			prev.Next = prev.Next.Next
 		} else {
 			hashmap[run.Val] = true
+			prev = run
 		}
 		run = run.Next
 	}
