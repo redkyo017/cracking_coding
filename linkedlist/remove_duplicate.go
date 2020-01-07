@@ -7,7 +7,7 @@ func RemoveDup(node LinkedListNode) LinkedListNode {
 	// cach 1: dung hash table (buffer allowed)
 	hashmap := make(map[int]bool)
 	run := &node
-	prev := &node
+	var prev *LinkedListNode
 
 	for run != nil {
 		if _, ok := hashmap[run.Val]; ok {
