@@ -14,5 +14,10 @@ func main() {
 	node5 := linkedlist.LinkedListNode{Val: 5, Next: &node4}
 	node6 := linkedlist.LinkedListNode{Val: 6, Next: &node5}
 
-	log.Println(linkedlist.ReturnKthToLast(node6, 5))
+	log.Println(linkedlist.DeleteMiddleNode(&node5))
+	// t := &node6
+	// for t != nil {
+	// 	log.Println("after delete", t)
+	// 	t = t.Next
+	// }
 }
