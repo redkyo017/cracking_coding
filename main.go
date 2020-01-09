@@ -12,16 +12,17 @@ func main() {
 	node3 := linkedlist.LinkedListNode{Val: 3, Next: &node2}
 	node4 := linkedlist.LinkedListNode{Val: 4, Next: &node3}
 	node5 := linkedlist.LinkedListNode{Val: 5, Next: &node4}
-	node6 := linkedlist.LinkedListNode{Val: 6, Next: &node5}
+	node6 := linkedlist.LinkedListNode{Val: 6, Next: nil}
 	node7 := linkedlist.LinkedListNode{Val: 7, Next: &node6}
 	node8 := linkedlist.LinkedListNode{Val: 8, Next: &node7}
 	node9 := linkedlist.LinkedListNode{Val: 9, Next: &node8}
-	node10 := linkedlist.LinkedListNode{Val: 10, Next: &node9}
+	node10 := linkedlist.LinkedListNode{Val: 1, Next: &node9}
 
-	log.Println(linkedlist.Partition(&node10, 5))
-	// t := &node6
-	// for t != nil {
-	// 	log.Println("after delete", t)
-	// 	t = t.Next
-	// }
+	log.Println(linkedlist.SumList(&node10, &node5, 0))
+	n := linkedlist.SumList(&node10, &node5, 0)
+	t := n
+	for t != nil {
+		log.Println("after delete", t)
+		t = t.Next
+	}
 }
