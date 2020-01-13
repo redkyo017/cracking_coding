@@ -28,29 +28,35 @@ func IsPalindrome(node *LinkedListNode) bool {
 	// reversed := ReverseAndClone(node)
 	// return IsEqual(node, reversed)
 
-	// solution 2: stack , slow and fast pointer
-	slow := node
-	fast := node
-	stack := []int{}
+	// // solution 2: stack , slow and fast pointer
+	// slow := node
+	// fast := node
+	// stack := []int{}
 
-	for fast != nil && fast.Next != nil {
-		stack = append(stack, slow.Val)
-		slow = slow.Next
-		fast = fast.Next.Next
-	}
+	// for fast != nil && fast.Next != nil {
+	// 	stack = append(stack, slow.Val)
+	// 	slow = slow.Next
+	// 	fast = fast.Next.Next
+	// }
 
-	if fast != nil {
-		slow = slow.Next
-	}
+	// if fast != nil {
+	// 	slow = slow.Next
+	// }
 
-	for slow != nil {
-		top := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
-		if top != slow.Val {
-			return false
-		}
-		slow = slow.Next
-	}
+	// for slow != nil {
+	// 	top := stack[len(stack)-1]
+	// 	stack = stack[:len(stack)-1]
+	// 	if top != slow.Val {
+	// 		return false
+	// 	}
+	// 	slow = slow.Next
+	// }
+
+	// solution 3: recursive
 
 	return true
+}
+
+func IsPalindromeRecurse(node *LinkedListNode, length int) (*LinkedListNode, bool) {
+
 }
