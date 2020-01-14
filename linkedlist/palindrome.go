@@ -53,10 +53,23 @@ func IsPalindrome(node *LinkedListNode) bool {
 	// }
 
 	// solution 3: recursive
-
-	return true
+	listLength := Length(node)
+	_, isPalindrome := IsPalindromeRecurse(node, listLength)
+	return isPalindrome
+	// return true
 }
 
 func IsPalindromeRecurse(node *LinkedListNode, length int) (*LinkedListNode, bool) {
+	if node == nil || length <= 0 {
+		return node, true
+	} else if length == 1 {
+		return node.Next, true
+	}
 
+	res, b := IsPalindromeRecurse(node.Next, length-2)
+	if res == nil || b == false {
+		return res, b
+	}
+
+	return res.Next, res.Val == node.Val
 }
