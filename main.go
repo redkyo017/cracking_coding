@@ -4,7 +4,6 @@ import (
 	// "cracking_coding/arraystrings"
 	// "cracking_coding/linkedlist"
 	"cracking_coding/stack_queue"
-	"log"
 )
 
 func main() {
@@ -23,6 +22,5 @@ func main() {
 
 	// node1.Next = &node6
 	// log.Println(linkedlist.FindBeginLoop(&node12))
-	fms := &stack_queue.FixedMultiStack{}
-	log.Println(fms.Show)
+	stack_queue.ImplementStackByOneArray()
 }
