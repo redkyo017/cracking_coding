@@ -60,13 +60,161 @@ func (fms *FixedMultiStack) Pop(stackNum int) (int, error) {
 	return value, nil
 }
 
+// IMPLEMENT FLEXIBLE SIZE STACK
+type StackInfo struct {
+	Start    int
+	Size     int
+	Capacity int
+}
+
+func (st *StackInfo) IsFull() bool {
+	return st.Size == st.Capacity
+}
+
+func (st *StackInfo) IsEmpty() bool {
+	return st.Size == 0
+}
+
+func (st *StackInfo) InitStack(start, capacity int) {
+	st.Start = start
+	st.Capacity = capacity
+}
+
+type MultiStack struct {
+	StackInfo []*StackInfo
+	Values    []int
+}
+
+func (ms *MultiStack) InitMultiStack(numberOfStacks, defaultSize int) {
+	for i := 0; i < numberOfStacks; i++ {
+		st := &StackInfo{}
+		st.Start = i * defaultSize
+		st.Capacity = defaultSize
+		ms.StackInfo = append(ms.StackInfo, st)
+	}
+	ms.Values = make([]int, numberOfStacks*defaultSize)
+}
+
+func (ms *MultiStack) IsWithinStackCapacity(index int, st *StackInfo) bool {
+	if index < 0 || index >= len(ms.Values) {
+		return false
+	}
+	var contiguousIndex int
+	if index < st.Start {
+		contiguousIndex = st.Start + len(ms.Values)
+	} else {
+		contiguousIndex = index
+	}
+	end := st.Start + st.Capacity
+	return st.Start <= contiguousIndex && contiguousIndex <= end
+}
+
+func (ms *MultiStack) LastCapacityIndex(st *StackInfo) int {
+	return ms.AdjustIndex(st.Start + st.Capacity - 1)
+}
+
+func (ms *MultiStack) LastElementIndex(st *StackInfo) int {
+	return ms.AdjustIndex(st.Start + st.Size - 1)
+}
+
+func (ms *MultiStack) NumberOfElements() int {
+	var sizes int
+	for _, st := range ms.StackInfo {
+		sizes += st.Size
+	}
+	return sizes
+}
+
+func (ms *MultiStack) AllStackFull() bool {
+	return ms.NumberOfElements() == len(ms.Values)
+}
+
+func (ms *MultiStack) AdjustIndex(index int) int {
+	max := len(ms.Values)
+	return ((index % max) + max) % max
+}
+
+func (ms *MultiStack) NextIndex(index int) int {
+	return ms.AdjustIndex(index + 1)
+}
+
+func (ms *MultiStack) PreviousIndex(index int) int {
+	return ms.AdjustIndex(index - 1)
+}
+
+func (ms *MultiStack) Peek(stackNum int) int {
+	st := ms.StackInfo[stackNum]
+	return ms.Values[ms.LastElementIndex(st)]
+}
+
+func (ms *MultiStack) Pop(stackNum int) (int, error) {
+	st := ms.StackInfo[stackNum]
+	if st.IsEmpty() {
+		return 0, errors.New("this stack is empty")
+	}
+	value := ms.Values[ms.LastElementIndex(st)]
+	ms.Values[ms.LastElementIndex(st)] = 0
+	st.Size--
+	return value, nil
+}
+
+func (ms *MultiStack) Shift(stackNum int) {
+	log.Println("shifting stack")
+	st := ms.StackInfo[stackNum]
+	if st.Size >= st.Capacity {
+		nextStack := (stackNum + 1) % len(ms.StackInfo)
+		ms.Shift(nextStack)
+		st.Capacity++
+	}
+	idx := ms.LastCapacityIndex(st)
+	for ms.IsWithinStackCapacity(idx, st) {
+		ms.Values[idx] = ms.Values[ms.PreviousIndex(idx)]
+		idx = ms.PreviousIndex(idx)
+	}
+
+	ms.Values[st.Start] = 0
+	st.Start = ms.NextIndex(st.Start)
+	st.Capacity--
+}
+
+func (ms *MultiStack) Expand(stackNum int) {
+	ms.Shift((stackNum + 1) % len(ms.StackInfo))
+	ms.StackInfo[stackNum].Capacity++
+}
+
+func (ms *MultiStack) Push(stackNum int, value int) error {
+	if ms.AllStackFull() {
+		return errors.New("all stack are full")
+	}
+
+	st := ms.StackInfo[stackNum]
+	if st.IsFull() {
+		ms.Expand(stackNum)
+	}
+	st.Size++
+	ms.Values[ms.LastElementIndex(st)] = value
+
+	return nil
+}
+
 func ImplementStackByOneArray() {
-	fms := &FixedMultiStack{}
-	fms.Init3Stack(5)
-	log.Println("con co", fms)
-	fms.Push(1, 9)
-	fms.Push(1, 8)
-	log.Println("con heo", fms)
-	fms.Pop(1)
-	log.Println("con meo", fms)
+	// fms := &FixedMultiStack{}
+	// fms.Init3Stack(5)
+	// log.Println("con co", fms)
+	// fms.Push(1, 9)
+	// fms.Push(1, 8)
+	// log.Println("con heo", fms)
+	// fms.Pop(1)
+	// log.Println("con meo", fms)
+
+	ms := &MultiStack{}
+	ms.InitMultiStack(3, 5)
+	log.Println("con co", ms)
+	ms.Push(2, 1)
+	ms.Push(2, 2)
+	ms.Push(2, 3)
+	ms.Push(2, 4)
+	ms.Push(2, 5)
+	ms.Push(2, 6)
+	log.Println("con heo", ms)
 }
