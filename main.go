@@ -22,5 +22,5 @@ func main() {
 
 	// node1.Next = &node6
 	// log.Println(linkedlist.FindBeginLoop(&node12))
-	stack_queue.ImplementSortStack()
+	stack_queue.ImplementAnimalShelter()
 }
