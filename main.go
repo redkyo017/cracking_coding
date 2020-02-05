@@ -19,6 +19,32 @@ func main() {
 	// stack_queue.ImplementAnimalShelter()
 }
 
+// func strStr(haystack string, needle string) int {
+// 	n := len(haystack)
+// 	m := len(needle)
+// 	if m == 0 {
+// 		return 0
+// 	}
+// 	i := 0
+// 	for i < n-m+1 {
+// 		match := true
+// 		j := 0
+// 		for j < m {
+// 			if haystack[i+j] != needle[j] {
+// 				match = false
+// 				break
+// 			}
+// 			j++
+// 		}
+// 		if match {
+// 			log.Println("matching at index:", i)
+// 			return i
+// 		}
+// 		i++
+// 	}
+// 	return -1
+// }
+
 // return first index of word found in text
 // func KMPSearch(haystack string, needle string) int {
 // 	n := len(haystack)
