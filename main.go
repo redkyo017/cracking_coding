@@ -1,11 +1,5 @@
 package main
 
-import (
-	// "cracking_coding/arraystrings"
-	// "cracking_coding/linkedlist"
-	"cracking_coding/stack_queue"
-)
-
 func main() {
 	// node1 := linkedlist.LinkedListNode{Val: 1, Next: nil}
 	// node2 := linkedlist.LinkedListNode{Val: 2, Next: &node1}
@@ -22,5 +16,58 @@ func main() {
 
 	// node1.Next = &node6
 	// log.Println(linkedlist.FindBeginLoop(&node12))
-	stack_queue.ImplementAnimalShelter()
+	// stack_queue.ImplementAnimalShelter()
 }
+
+// return first index of word found in text
+// func KMPSearch(haystack string, needle string) int {
+// 	n := len(haystack)
+// 	m := len(needle)
+// 	if m == 0 {
+// 		return 0
+// 	}
+
+// 	lps := makeLPS(needle)
+// 	i, j := 0, 0
+
+// 	for i < n {
+// 		if haystack[i] == needle[j] {
+// 			i++
+// 			j++
+// 		}
+
+// 		if j == m {
+// 			log.Println("found pattern at ", i-j)
+// 			return i - j
+// 		} else if i < n && haystack[i] != needle[j] {
+// 			if j != 0 {
+// 				j = lps[j-1]
+// 			} else {
+// 				i++
+// 			}
+// 		}
+// 	}
+// 	return -1
+// }
+
+// func makeLPS(s string) []int {
+// 	lps := make([]int, len(s))
+// 	lps[0] = 0
+// 	m := 0 // length of longest previous prefix suffix
+// 	i := 1
+// 	for i < len(s) {
+// 		if s[i] == s[m] {
+// 			m++
+// 			lps[i] = m
+// 			i++
+// 		} else {
+// 			if m != 0 {
+// 				m = lps[m-1]
+// 			} else {
+// 				lps[i] = 0
+// 				i++
+// 			}
+// 		}
+// 	}
+// 	return lps
+// }
