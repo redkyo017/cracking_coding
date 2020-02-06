@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 func main() {
 	// node1 := linkedlist.LinkedListNode{Val: 1, Next: nil}
 	// node2 := linkedlist.LinkedListNode{Val: 2, Next: &node1}
@@ -17,6 +19,7 @@ func main() {
 	// node1.Next = &node6
 	// log.Println(linkedlist.FindBeginLoop(&node12))
 	// stack_queue.ImplementAnimalShelter()
+	log.Println(repeatedSubstringPattern("abac"))
 }
 
 // func strStr(haystack string, needle string) int {
@@ -76,24 +79,49 @@ func main() {
 // 	return -1
 // }
 
-// func makeLPS(s string) []int {
-// 	lps := make([]int, len(s))
-// 	lps[0] = 0
-// 	m := 0 // length of longest previous prefix suffix
-// 	i := 1
-// 	for i < len(s) {
-// 		if s[i] == s[m] {
-// 			m++
-// 			lps[i] = m
-// 			i++
-// 		} else {
-// 			if m != 0 {
-// 				m = lps[m-1]
-// 			} else {
-// 				lps[i] = 0
-// 				i++
-// 			}
-// 		}
-// 	}
-// 	return lps
-// }
+func makeLPS(s string) []int {
+	lps := make([]int, len(s))
+	lps[0] = 0
+	m := 0 // length of longest previous prefix suffix
+	i := 1
+	for i < len(s) {
+		if s[i] == s[m] {
+			m++
+			lps[i] = m
+			i++
+		} else {
+			if m != 0 {
+				m = lps[m-1]
+			} else {
+				lps[i] = 0
+				i++
+			}
+		}
+	}
+	return lps
+}
+
+func repeatedSubstringPattern(s string) bool {
+	if len(s) <= 1 {
+		return false
+	}
+	lps := makeLPS(s)
+	if lps[len(lps)-1] == 0 {
+		return false
+	}
+	lenSubStr := len(s) - lps[len(lps)-1]
+	subString := s[:lenSubStr]
+	if len(s)%lenSubStr != 0 {
+		return false
+	}
+	j := 0
+	for ; j < len(s); j += lenSubStr {
+		if s[j:j+lenSubStr] != subString {
+			break
+		}
+	}
+	if j == len(s) {
+		return true
+	}
+	return false
+}
