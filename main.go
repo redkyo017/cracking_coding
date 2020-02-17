@@ -1,6 +1,9 @@
 package main
 
-import "cracking_coding/bit_manipulation"
+import (
+	"cracking_coding/bit_manipulation"
+	"log"
+)
 
 func main() {
 	// node1 := linkedlist.LinkedListNode{Val: 1, Next: nil}
@@ -20,7 +23,10 @@ func main() {
 	// log.Println(linkedlist.FindBeginLoop(&node12))
 	// stack_queue.ImplementAnimalShelter()
 	// log.Println(repeatedSubstringPattern("abac"))
-	bit_manipulation.UpdateBits(1, 2, 3, 4)
+	log.Println(bit_manipulation.UpdateBits(
+		bit_manipulation.BinToInt("10011110000"),
+		bit_manipulation.BinToInt("10011"),
+		2, 6))
 }
 
 // func strStr(haystack string, needle string) int {
