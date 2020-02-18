@@ -23,10 +23,11 @@ func main() {
 	// log.Println(linkedlist.FindBeginLoop(&node12))
 	// stack_queue.ImplementAnimalShelter()
 	// log.Println(repeatedSubstringPattern("abac"))
-	log.Println(bit_manipulation.UpdateBits(
-		bit_manipulation.BinToInt("10011110000"),
-		bit_manipulation.BinToInt("10011"),
-		2, 6))
+	// log.Println(bit_manipulation.UpdateBits(
+	// 	bit_manipulation.BinToInt("10011110000"),
+	// 	bit_manipulation.BinToInt("10011"),
+	// 	2, 6))
+	log.Println(bit_manipulation.BitSwapRequired(50, 15))
 }
 
 // func strStr(haystack string, needle string) int {
