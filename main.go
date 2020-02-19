@@ -27,7 +27,7 @@ func main() {
 	// 	bit_manipulation.BinToInt("10011110000"),
 	// 	bit_manipulation.BinToInt("10011"),
 	// 	2, 6))
-	log.Println(bit_manipulation.BitSwapRequired(50, 15))
+	log.Println(bit_manipulation.SwapOddEventBits(75))
 }
 
 // func strStr(haystack string, needle string) int {
