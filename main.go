@@ -27,8 +27,8 @@ func main() {
 	// 	bit_manipulation.BinToInt("10011"),
 	// 	2, 6))
 	// log.Println(bit_manipulation.SwapOddEventBits(75))\
-	screen := []byte{1, 2, 3, 4}
-	bit_manipulation.DrawLine(screen, 4, 5, 6, 7)
+	screen := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
+	bit_manipulation.DrawLine(screen, 4, 2, 31, 2)
 }
 
 // func strStr(haystack string, needle string) int {
