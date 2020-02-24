@@ -1,7 +1,9 @@
 package main
 
 import (
-	"cracking_coding/bit_manipulation"
+	"cracking_coding/recursion_dp"
+	"log"
+	"time"
 )
 
 func main() {
@@ -27,8 +29,11 @@ func main() {
 	// 	bit_manipulation.BinToInt("10011"),
 	// 	2, 6))
 	// log.Println(bit_manipulation.SwapOddEventBits(75))\
-	screen := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
-	bit_manipulation.DrawLine(screen, 4, 2, 31, 2)
+	// screen := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
+	start := time.Now()
+	log.Println(recursion_dp.CountWays2(30))
+	elapsed := time.Since(start)
+	log.Printf("Solution took %s", elapsed)
 }
 
 // func strStr(haystack string, needle string) int {
