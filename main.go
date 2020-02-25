@@ -30,15 +30,16 @@ func main() {
 	// 	2, 6))
 	// log.Println(bit_manipulation.SwapOddEventBits(75))\
 	// screen := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
-	maze := [][]bool{
-		[]bool{true, true, true, true, true},
-		[]bool{true, false, true, true, true},
-		[]bool{true, true, false, true, true},
-		[]bool{true, true, true, false, true},
-		[]bool{true, true, true, false, true},
-	}
+	// maze := [][]bool{
+	// 	[]bool{true, true, true, true, true},
+	// 	[]bool{true, false, true, true, true},
+	// 	[]bool{true, true, false, true, true},
+	// 	[]bool{true, true, true, false, true},
+	// 	[]bool{true, true, true, false, true},
+	// }
+	arr := []int{3, 3, 4, 4, 5, 6, 7, 7}
 	start := time.Now()
-	log.Println(recursion_dp.FindPaths(maze))
+	log.Println(recursion_dp.MagicIndex(arr))
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
