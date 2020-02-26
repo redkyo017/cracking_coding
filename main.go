@@ -38,9 +38,10 @@ func main() {
 	// 	[]bool{true, true, true, false, true},
 	// }
 	// arr := []int{3, 3, 4, 4, 5, 6, 7, 7}
-	set := []int{1, 2, 3, 4, 5}
+	// set := []int{1, 2, 3, 4, 5}
 	start := time.Now()
-	log.Println(recursion_dp.GetSubsets(set, 0))
+	// log.Println(recursion_dp.TowerOfHanoi(5))
+	recursion_dp.TowerOfHanoi(5)
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
