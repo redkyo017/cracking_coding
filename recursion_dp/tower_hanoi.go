@@ -14,6 +14,7 @@ func TowerOfHanoi(n int) {
 }
 
 func MoveDisks(n int, origin, destination, buffer *[]int) {
+	// log.Printf("con heo origin: %p - des: %p - buff: %p", &origin, &destination, &buffer)
 	if n < 0 {
 		return
 	}

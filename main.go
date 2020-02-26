@@ -41,7 +41,7 @@ func main() {
 	// set := []int{1, 2, 3, 4, 5}
 	start := time.Now()
 	// log.Println(recursion_dp.TowerOfHanoi(5))
-	recursion_dp.TowerOfHanoi(5)
+	recursion_dp.TowerOfHanoi(3)
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
