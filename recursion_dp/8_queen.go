@@ -1,7 +1,6 @@
 package recursion_dp
 
 import (
-	"log"
 	"math"
 )
 
@@ -11,15 +10,15 @@ func EightQueen() {
 	results := [][]int{}
 	columns := make([]int, GRID_SIZE)
 	PlaceQueen(0, columns, &results)
-	// for _, v := range results {
-	// 	log.Printf("con co: %T\n", v)
+	// for k, v := range results {
+	// 	log.Printf("con co: %d - %+v - %p", k, v, v)
 	// }
 }
 
 func PlaceQueen(row int, columns []int, results *[][]int) {
 	if row == GRID_SIZE {
 		*results = append(*results, columns)
-		log.Println("con heo", results, columns)
+		// log.Println("con heo", results, columns)
 	} else {
 		for col := 0; col < GRID_SIZE; col++ {
 			if checkValid(columns, row, col) {
