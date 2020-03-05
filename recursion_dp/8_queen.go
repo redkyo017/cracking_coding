@@ -11,12 +11,15 @@ func EightQueen() {
 	results := [][]int{}
 	columns := make([]int, GRID_SIZE)
 	PlaceQueen(0, columns, &results)
-	log.Println("con co", results)
+	// for _, v := range results {
+	// 	log.Printf("con co: %T\n", v)
+	// }
 }
 
 func PlaceQueen(row int, columns []int, results *[][]int) {
 	if row == GRID_SIZE {
-		(*results) = append(*results, columns)
+		*results = append(*results, columns)
+		log.Println("con heo", results, columns)
 	} else {
 		for col := 0; col < GRID_SIZE; col++ {
 			if checkValid(columns, row, col) {
@@ -30,7 +33,6 @@ func PlaceQueen(row int, columns []int, results *[][]int) {
 func checkValid(columns []int, row1 int, col1 int) bool {
 	for row2 := 0; row2 < row1; row2++ {
 		column2 := columns[row2]
-
 		if column2 == col1 {
 			return false
 		}
