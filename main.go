@@ -44,7 +44,7 @@ func main() {
 	// log.Println(recursion_dp.GenerateParenthese(3))
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
-	recursion_dp.EightQueen()
+	recursion_dp.ImplementStackOfBox()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
