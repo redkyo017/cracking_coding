@@ -25,10 +25,13 @@ func (b Boxes) Swap(i, j int) {
 func CreateStack(boxes Boxes) int {
 	sort.Sort(boxes)
 	log.Println("con meo", boxes)
-	// slow solution
 	maxHeight := 0
+	stackMap := make([]int, len(boxes))
 	for i := 0; i < len(boxes); i++ {
-		height := CreateStackSlow(boxes, i)
+		// slow solution
+		// height := CreateStackSlow(boxes, i)
+		// fast solution
+		height := CreateStackFaster(boxes, i, stackMap)
 		maxHeight = int(math.Max(float64(height), float64(maxHeight)))
 	}
 	return maxHeight
@@ -57,5 +60,22 @@ func CreateStackSlow(boxes []Box, bottomIndex int) int {
 		}
 	}
 	maxHeight += bottom.Height
+	return maxHeight
+}
+
+func CreateStackFaster(boxes []Box, bottomIndex int, stackMap []int) int {
+	if bottomIndex < len(boxes) && stackMap[bottomIndex] > 0 {
+		return stackMap[bottomIndex]
+	}
+	bottom := boxes[bottomIndex]
+	maxHeight := 0
+	for i := bottomIndex + 1; i < len(boxes); i++ {
+		if boxes[i].Height < bottom.Height {
+			height := CreateStackFaster(boxes, i, stackMap)
+			maxHeight = int(math.Max(float64(height), float64(maxHeight)))
+		}
+	}
+	maxHeight += bottom.Height
+	stackMap[bottomIndex] = maxHeight
 	return maxHeight
 }
