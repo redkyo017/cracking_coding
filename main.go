@@ -1,7 +1,8 @@
 package main
 
 import (
-	"cracking_coding/recursion_dp"
+	// "cracking_coding/recursion_dp"
+	"cracking_coding/sort_search"
 	"log"
 	"time"
 )
@@ -44,7 +45,7 @@ func main() {
 	// log.Println(recursion_dp.GenerateParenthese(3))
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
-	recursion_dp.ImplementCountEval()
+	sort_search.ImplementSortMerged()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
