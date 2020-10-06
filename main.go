@@ -2,7 +2,8 @@ package main
 
 import (
 	// "cracking_coding/recursion_dp"
-	"cracking_coding/sort_search"
+	// "cracking_coding/sort_search"
+	"cracking_coding/leet_code"
 	"log"
 	"time"
 )
@@ -41,11 +42,13 @@ func main() {
 	// arr := []int{3, 3, 4, 4, 5, 6, 7, 7}
 	// set := []int{1, 2, 3, 4, 5}
 	start := time.Now()
+	// recursion_dp.EightQueen()
 	// log.Println(recursion_dp.TowerOfHanoi(5))
 	// log.Println(recursion_dp.GenerateParenthese(3))
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
-	sort_search.ImplementSortMerged()
+	// sort_search.ImplementSortMerged()
+	log.Println(leet_code.JumpII([]int{2,3,1,1,4}))
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
