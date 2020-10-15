@@ -28,33 +28,31 @@ func JumpII(nums []int) int {
 	if len(nums) <= 1 { 
 		return 0
 	}
-	list_step := make(map[int][][]int, len(nums))
-	list_step[0] = append([][]int{}, []int{0})
-	list_step[1] = append([][]int{}, []int{1})
-	
-	for i := 2; i < len(nums);i++ {
-		stepsAtIndex := [][]int{}
-		// log.Println("con heo", i, nums[i], stepsAtIndex)
-		for j := i-1; j >= 0; j-- {
-			if nums[j] >= i-j {
-				// log.Println("can step", j)
-				stepAtJ := list_step[j]
-				for _,v := range stepAtJ {
-					newStep := append(v, i-j)
-					stepsAtIndex = append(stepsAtIndex, newStep)
-				}
+	listSteps := make([]int, len(nums))
+	for i := 0; i<len(nums); i++ {
+		listSteps[i] = 0
+	}
+	for i := 0; i<len(nums); i++ {
+		stepAtIndex := nums[i]
+		if stepAtIndex == 0 {
+			continue
+		}
+		for step := 1; step <= stepAtIndex; step++ {
+			if (step+i) >= len(nums) {
+				break
+			}
+			val := listSteps[i+step]
+			if step > val {
+				listSteps[i+step] = step
 			}
 		}
-		list_step[i] = stepsAtIndex
 	}
-	stepAtEnd := list_step[len(nums)-1]
-	const MaxUint = ^uint(0)
-	minStep := int(MaxUint >> 1) 
-	for _,v := range stepAtEnd {
-		if len(v) < minStep {
-			minStep = len(v)
-		}
+	minStep := 0
+	index := len(listSteps)-1
+	for index > 0 {
+		index = index - listSteps[index]
+		minStep++
 	}
-	// log.Println("con co", minStep)
+	log.Println("con meo", listSteps, minStep)
 	return minStep
 }
