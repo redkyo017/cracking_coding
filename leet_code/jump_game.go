@@ -16,16 +16,18 @@
 // You can assume that you can always reach the last index.
 package leet_code
 
-import "log"
-
-// func main() {
-// 	arr := []int{2, 3, 1, 1, 4}
-// 	log.Println("con co be be", jump(arr))
-// }
+import (
+	"log"
+	// "math/rand"
+	// "time"
+)
 
 func JumpII() {
-	// nums := []int{5,6,5,3,9,8,3,1,2,8,2,4,8,3,9,1,0,9,4,6,5,9,8,7,4,2,1,0,2}
-	nums := []int{3,2,4,1,1,1,1}
+	nums := []int{5,6,5,3,9,8,3,1,2,8,2,4,8,3,9,1,0,9,4,6,5,9,8,7,4,2,1,0,2}
+	// nums := []int{3,2,4,1,1,1,1}
+	// rand.Seed(time.Now().Unix())
+	// nums := rand.Perm(100)
+	// log.Println("con co", nums)
 	log.Println(Solution2(nums))
 }
 
@@ -59,7 +61,7 @@ func Solution1(nums []int) int {
 		index = index - listSteps[index]
 		minStep++
 	}
-	log.Println("con meo", listSteps, minStep)
+	// log.Println("con meo", listSteps, minStep)
 	return minStep
 }
 
