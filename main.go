@@ -48,7 +48,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	log.Println(leet_code.JumpII([]int{5,6,5,3,9,8,3,1,2,8,2,4,8,3,9,1,0,9,4,6,5,9,8,7,4,2,1,0,2}))
+	leet_code.JumpII()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }

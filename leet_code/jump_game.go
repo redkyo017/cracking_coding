@@ -23,8 +23,14 @@ import "log"
 // 	log.Println("con co be be", jump(arr))
 // }
 
+func JumpII() {
+	// nums := []int{5,6,5,3,9,8,3,1,2,8,2,4,8,3,9,1,0,9,4,6,5,9,8,7,4,2,1,0,2}
+	nums := []int{3,2,4,1,1,1,1}
+	log.Println(Solution2(nums))
+}
 
-func JumpII(nums []int) int {
+
+func Solution1(nums []int) int {
 	if len(nums) <= 1 { 
 		return 0
 	}
@@ -54,5 +60,35 @@ func JumpII(nums []int) int {
 		minStep++
 	}
 	log.Println("con meo", listSteps, minStep)
+	return minStep
+}
+
+func Solution2(nums []int) int {
+	if len(nums) <= 1 { 
+		return 0
+	}
+	minStep := 0
+	index := 0
+	for index < len(nums)-1 {
+		stepAtIndex := nums[index]
+		if stepAtIndex == 0 {
+			index++
+			continue
+		}
+		atIndex := index
+		maxCanJupm := 0
+		for i := 1;i <= stepAtIndex; i++ {
+			nextStep := i+atIndex
+			if nextStep >= len(nums) {
+				break
+			}
+			if nums[nextStep] + nextStep >= maxCanJupm {
+				maxCanJupm = nums[nextStep] + nextStep
+				index = nextStep
+			}
+		}
+		minStep++
+	}
+	// log.Println("con co", minStep, index)
 	return minStep
 }
