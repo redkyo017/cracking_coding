@@ -27,6 +27,8 @@ func JumpII() {
 	// nums := []int{3,2,4,1,1,1,1}
 	// rand.Seed(time.Now().Unix())
 	// nums := rand.Perm(100)
+	// nums := []int{3,2,1}
+	// nums := []int{2,3,1}
 	// log.Println("con co", nums)
 	log.Println(Solution2(nums))
 }
@@ -81,8 +83,10 @@ func Solution2(nums []int) int {
 		maxCanJupm := 0
 		for i := 1;i <= stepAtIndex; i++ {
 			nextStep := i+atIndex
-			if nextStep >= len(nums) {
-				break
+			if nextStep >= len(nums)-1 {
+				index = nextStep
+				continue
+				// break
 			}
 			if nums[nextStep] + nextStep >= maxCanJupm {
 				maxCanJupm = nums[nextStep] + nextStep
