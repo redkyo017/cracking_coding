@@ -43,17 +43,9 @@ func HalloweenParty() {
 }
 
 func resolve(k int) int {
-	if k == 0 {
-		return 0
+	cut := k/2
+	if k%2 == 0 {
+		return cut*cut
 	}
-	vertical := 0
-	horizontal := 0
-	for k > 0 {
-		vertical++
-		horizontal++
-	}
-	if k < 0 {
-		horizontal--
-	}
-	return vertical*horizontal
+	return cut*(cut+1)
 }
