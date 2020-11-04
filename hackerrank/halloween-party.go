@@ -39,10 +39,12 @@ import (
 
 func HalloweenParty() {
 	log.Println("solve problem")
-	log.Println(resolve(5))
+	log.Println(halloween_solution(5))
+	log.Println(halloween_solution(6))
+	log.Println(halloween_solution(7))
 }
 
-func resolve(k int) int {
+func halloween_solution(k int) int {
 	cut := k/2
 	if k%2 == 0 {
 		return cut*cut
