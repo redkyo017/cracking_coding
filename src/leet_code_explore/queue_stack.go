@@ -46,9 +46,13 @@ type CircularQueue struct {
 
 func (q *CircularQueue) CircularEnqueue(value int) bool {
 	if q.IsFull() {
-
+		return false
 	}
-	q.value[len(q.value)-1] = value
+	if q.IsEmpty() {
+		q.head = 0
+	}
+	q.tail = (q.tail + 1) % len(q.value)
+	q.value[q.tail] = value
 	return true
 }
 
@@ -56,20 +60,26 @@ func (q *CircularQueue) CircularDequeue() bool {
 	if q.IsEmpty() {
 		return false
 	}
+	if q.head == q.tail {
+		q.head = -1
+		q.tail = -1
+		return true
+	}
+	q.head = (q.head + 1) % len(q.value)
 	log.Println("dequeue value", q.value[0])
 	return true
 }
 
 func (q *CircularQueue) CircularFront() int {
 	if q.IsEmpty() {
-		return 0
+		return -1
 	}
 	return q.value[q.head]
 }
 
 func (q *CircularQueue) CircularRear() int {
 	if q.IsEmpty() {
-		return 0
+		return -1
 	}
 	return q.value[q.tail]
 }
@@ -96,4 +106,21 @@ func QueueImplementation() {
 	// squeue.StraightDequeue()
 	// squeue.StraightDequeue()
 	// log.Println("dequeued", squeue.value)
+
+	// circular queue
+	cqueue := CircularQueue{
+		value: [5]int{},
+		head:  -1,
+		tail:  -1,
+	}
+	cqueue.CircularEnqueue(1)
+	cqueue.CircularEnqueue(1)
+	cqueue.CircularEnqueue(2)
+	cqueue.CircularEnqueue(3)
+	cqueue.CircularEnqueue(5)
+	log.Println("enqueued", cqueue.CircularFront(), cqueue.CircularRear(), cqueue)
+	log.Println(cqueue.CircularEnqueue(8))
+	cqueue.CircularDequeue()
+	cqueue.CircularDequeue()
+	log.Println("dequeued", cqueue.CircularFront(), cqueue.CircularRear(), cqueue)
 }
