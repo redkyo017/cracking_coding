@@ -124,3 +124,8 @@ func QueueImplementation() {
 	cqueue.CircularDequeue()
 	log.Println("dequeued", cqueue.CircularFront(), cqueue.CircularRear(), cqueue)
 }
+
+// PRACTISE BFS
+func numIsland(grid [][]byte) int {
+
+}
