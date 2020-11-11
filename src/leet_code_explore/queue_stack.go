@@ -266,7 +266,7 @@ func openLock(deadends []string, target string) int {
 	for _, v := range deadends {
 		deadendsMap[v] = true
 	}
-	step := 0
+	step := -1
 	queueLocks := append([]string{}, "0000")
 	visited := map[string]bool{"0000": true}
 	for len(queueLocks) > 0 {
@@ -282,10 +282,6 @@ func openLock(deadends []string, target string) int {
 				queueLocks = queueLocks[1:]
 				continue
 			}
-			if _, ok := visited[lockCase]; ok {
-				queueLocks = queueLocks[1:]
-				continue
-			}
 			for k, numStr := range lockCase {
 				num, _ := strconv.Atoi(string(numStr))
 				toward := (num + 1)
@@ -297,13 +293,18 @@ func openLock(deadends []string, target string) int {
 					backward = 9
 				}
 				towardCase := fmt.Sprintf("%s%d%s", lockCase[:k], toward, lockCase[k+1:])
+				if _, ok := visited[towardCase]; !ok {
+					queueLocks = append(queueLocks, towardCase)
+					visited[towardCase] = true
+				}
 				backwardCase := fmt.Sprintf("%s%d%s", lockCase[:k], backward, lockCase[k+1:])
-				queueLocks = append(queueLocks, towardCase, backwardCase)
-				visited[towardCase] = true
-				visited[backwardCase] = true
+				if _, ok := visited[backwardCase]; !ok {
+					queueLocks = append(queueLocks, backwardCase)
+					visited[backwardCase] = true
+				}
 			}
 			queueLocks = queueLocks[1:]
-			log.Println("con co", queueLocks)
+			// log.Println("con co", queueLocks)
 		}
 	}
 	return -1
@@ -312,5 +313,11 @@ func openLock(deadends []string, target string) int {
 func OpenLockSolution() {
 	deadends := []string{"0201", "0101", "0102", "1212", "2002"}
 	target := "0202"
+	// deadends := []string{"8888"}
+	// target := "0009"
+	// deadends := []string{"8887", "8889", "8878", "8898", "8788", "8988", "7888", "9888"}
+	// target := "8888"
+	// deadends := []string{"0000"}
+	// target := "8888"
 	log.Println("openLock: ", openLock(deadends, target))
 }
