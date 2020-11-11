@@ -3,6 +3,7 @@ package leet_code_explore
 import (
 	"fmt"
 	"log"
+	"strconv"
 )
 
 type StraightQueue struct {
@@ -156,61 +157,160 @@ func numIsland(grid [][]byte) int {
 	if len(grid) == 0 {
 		return 0
 	}
-	landNode := make(map[string]bool)
-	// visitedNode := make(map[string]bool)
+	visitedNode := make(map[string]bool)
 	type nodeItem struct {
 		row int
 		col int
 	}
-	nodeQueue := []nodeItem{}
-	nodeQueue = append(nodeQueue, nodeItem{0, 0})
+	landNode := []nodeItem{}
 	step := 0
 	for r, lines := range grid {
 		for c, value := range lines {
 			if string(value) == "1" {
-				landNode[fmt.Sprintf("%d-%d", r, c)] = true
+				landNode = append(landNode, nodeItem{r, c})
 			}
 		}
 	}
-	for len(nodeQueue) > 0 {
+
+	for _, v := range landNode {
+		if _, ok := visitedNode[fmt.Sprintf("%d-%d", v.row, v.col)]; ok {
+			continue
+		}
 		step++
-		size := len(nodeQueue)
-		log.Println("con meo", size)
-		for i := 0; i < size; i++ {
-			log.Println("con heo", i)
-			node := nodeQueue[0]
-			row := node.row
-			col := node.col
-			log.Println("con co 0", nodeQueue)
-			if row < len(grid) && col < len(grid[0])-1 && string(grid[row][col+1]) == "1" {
-				nodeQueue = append(nodeQueue, nodeItem{row, col + 1})
-				log.Println("con co 1", nodeQueue, string(grid[row][col+1]))
+		nodeQueue := append([]nodeItem{}, v)
+		for len(nodeQueue) > 0 {
+			size := len(nodeQueue)
+			for i := 0; i < size; i++ {
+				node := nodeQueue[0]
+				row := node.row
+				col := node.col
+				if col+1 < len(grid[0]) && string(grid[row][col+1]) == "1" {
+					if _, ok := visitedNode[fmt.Sprintf("%d-%d", row, col+1)]; !ok {
+						nodeQueue = append(nodeQueue, nodeItem{row, col + 1})
+						visitedNode[fmt.Sprintf("%d-%d", row, col+1)] = true
+					}
+				}
+				if col-1 >= 0 && string(grid[row][col-1]) == "1" {
+					if _, ok := visitedNode[fmt.Sprintf("%d-%d", row, col-1)]; !ok {
+						nodeQueue = append(nodeQueue, nodeItem{row, col - 1})
+						visitedNode[fmt.Sprintf("%d-%d", row, col-1)] = true
+					}
+				}
+
+				if row+1 < len(grid) && string(grid[row+1][col]) == "1" {
+					if _, ok := visitedNode[fmt.Sprintf("%d-%d", row+1, col)]; !ok {
+						nodeQueue = append(nodeQueue, nodeItem{row + 1, col})
+						visitedNode[fmt.Sprintf("%d-%d", row+1, col)] = true
+					}
+				}
+
+				if row-1 >= 0 && string(grid[row-1][col]) == "1" {
+					if _, ok := visitedNode[fmt.Sprintf("%d-%d", row-1, col)]; !ok {
+						nodeQueue = append(nodeQueue, nodeItem{row - 1, col})
+						visitedNode[fmt.Sprintf("%d-%d", row-1, col)] = true
+					}
+				}
+				nodeQueue = nodeQueue[1:]
 			}
-			if col < len(grid) && row < len(grid)-1 && string(grid[row+1][col]) == "1" {
-				nodeQueue = append(nodeQueue, nodeItem{row + 1, col})
-				log.Println("con co 2", nodeQueue, string(grid[row+1][col]))
-			}
-			nodeQueue = nodeQueue[1:]
-			log.Println("con co 3", nodeQueue)
-			log.Println("-----")
 		}
 	}
-	log.Println("con co", grid, step)
+	log.Println("step", step)
 	return step
 }
 
 func NumIslandSolution() {
-	grid := [][]byte{
-		[]byte("11000"),
-		[]byte("11000"),
-		[]byte("00100"),
-		[]byte("00011"),
-	}
+	// grid := [][]byte{
+	// 	[]byte("11000"),
+	// 	[]byte("11000"),
+	// 	[]byte("00100"),
+	// 	[]byte("00011"),
+	// }
 	// grid := [][]byte{
 	// 	[]byte("11110"),
 	// 	[]byte("11010"),
 	// 	[]byte("11000"),
 	// 	[]byte("00000"),
 	// }
+	grid := [][]byte{
+		[]byte("111"),
+		[]byte("010"),
+		[]byte("111"),
+	}
+	// grid := [][]byte{
+	// 	[]byte("10111"),
+	// 	[]byte("10101"),
+	// 	[]byte("11101"),
+	// }
 	numIsland(grid)
+}
+
+// You have a lock in front of you with 4 circular wheels. Each wheel has 10 slots: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'. The wheels can rotate freely and wrap around: for example we can turn '9' to be '0', or '0' to be '9'. Each move consists of turning one wheel one slot.
+
+// The lock initially starts at '0000', a string representing the state of the 4 wheels.
+
+// You are given a list of deadends dead ends, meaning if the lock displays any of these codes, the wheels of the lock will stop turning and you will be unable to open it.
+
+// Given a target representing the value of the wheels that will unlock the lock, return the minimum total number of turns required to open the lock, or -1 if it is impossible.
+
+// Input: deadends = ["0201","0101","0102","1212","2002"], target = "0202"
+// Output: 6
+// Input: deadends = ["8888"], target = "0009"
+// Output: 1
+// Input: deadends = ["8887","8889","8878","8898","8788","8988","7888","9888"], target = "8888"
+// Output: -1
+// Input: deadends = ["0000"], target = "8888"
+// Output: -1
+
+func openLock(deadends []string, target string) int {
+	deadendsMap := make(map[string]bool)
+	for _, v := range deadends {
+		deadendsMap[v] = true
+	}
+	step := 0
+	queueLocks := append([]string{}, "0000")
+	visited := map[string]bool{"0000": true}
+	for len(queueLocks) > 0 {
+		step++
+		size := len(queueLocks)
+		log.Println("con meo", size)
+		for i := 0; i < size; i++ {
+			lockCase := queueLocks[0]
+			if lockCase == target {
+				return step
+			}
+			if _, ok := deadendsMap[lockCase]; ok {
+				queueLocks = queueLocks[1:]
+				continue
+			}
+			if _, ok := visited[lockCase]; ok {
+				queueLocks = queueLocks[1:]
+				continue
+			}
+			for k, numStr := range lockCase {
+				num, _ := strconv.Atoi(string(numStr))
+				toward := (num + 1)
+				backward := (num - 1)
+				if toward > 9 {
+					toward = 0
+				}
+				if backward < 0 {
+					backward = 9
+				}
+				towardCase := fmt.Sprintf("%s%d%s", lockCase[:k], toward, lockCase[k+1:])
+				backwardCase := fmt.Sprintf("%s%d%s", lockCase[:k], backward, lockCase[k+1:])
+				queueLocks = append(queueLocks, towardCase, backwardCase)
+				visited[towardCase] = true
+				visited[backwardCase] = true
+			}
+			queueLocks = queueLocks[1:]
+			log.Println("con co", queueLocks)
+		}
+	}
+	return -1
+}
+
+func OpenLockSolution() {
+	deadends := []string{"0201", "0101", "0102", "1212", "2002"}
+	target := "0202"
+	log.Println("openLock: ", openLock(deadends, target))
 }
