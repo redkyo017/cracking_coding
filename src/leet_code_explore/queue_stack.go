@@ -341,13 +341,13 @@ func numSquares(n int) int {
 		return 0
 	}
 
-	step := -1
+	step := 0
 	queueNums := [][]int{[]int{0, n}}
 
 	for len(queueNums) > 0 {
 		step++
 		size := len(queueNums)
-		log.Println("con meo", queueNums, size)
+		log.Println("con meo", queueNums, size, step)
 		for i := 0; i < size; i++ {
 			prevPerfectSuareNum := queueNums[0][0]
 			remain := queueNums[0][1]
