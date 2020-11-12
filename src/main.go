@@ -50,7 +50,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	leet_code_explore.OpenLockSolution()
+	leet_code_explore.NumSquaresSolution()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }

@@ -3,6 +3,7 @@ package leet_code_explore
 import (
 	"fmt"
 	"log"
+	"math"
 	"strconv"
 )
 
@@ -320,4 +321,54 @@ func OpenLockSolution() {
 	// deadends := []string{"0000"}
 	// target := "8888"
 	log.Println("openLock: ", openLock(deadends, target))
+}
+
+// PERFECT SQUARES
+// Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+
+// Example 1:
+// Input: n = 12
+// Output: 3
+// Explanation: 12 = 4 + 4 + 4.
+
+// Example 2:
+// Input: n = 13
+// Output: 2
+// Explanation: 13 = 4 + 9.
+
+func numSquares(n int) int {
+	if n == 0 {
+		return 0
+	}
+
+	step := -1
+	queueNums := [][]int{[]int{0, n}}
+
+	for len(queueNums) > 0 {
+		step++
+		size := len(queueNums)
+		log.Println("con meo", queueNums, size)
+		for i := 0; i < size; i++ {
+			prevPerfectSuareNum := queueNums[0][0]
+			remain := queueNums[0][1]
+			for j := int(math.Sqrt(float64(prevPerfectSuareNum))); j*j <= remain; j++ {
+				perfectSquare := j * j
+				if remain-perfectSquare == 0 {
+					return step
+				}
+				if perfectSquare == 0 || remain-perfectSquare < 0 {
+					continue
+				}
+				queueNums = append(queueNums, []int{j * j, remain - (j * j)})
+			}
+			queueNums = queueNums[1:]
+		}
+		log.Println("con co", queueNums)
+	}
+	return -1
+}
+
+func NumSquaresSolution() {
+	n := 12
+	log.Println(numSquares(n))
 }
