@@ -372,3 +372,127 @@ func NumSquaresSolution() {
 	n := 12
 	log.Println(numSquares(n))
 }
+
+type MinStack struct {
+	values [][]int
+}
+
+func (this *MinStack) Push(v int) {
+	if len(this.values) == 0 {
+		this.values = append(this.values, []int{v, v})
+		return
+	}
+	top := this.values[len(this.values)-1]
+	min := top[1]
+	if v <= min {
+		this.values = append(this.values, []int{v, v})
+	} else {
+		this.values = append(this.values, []int{v, min})
+	}
+}
+
+func (this *MinStack) Pop() {
+	this.values = this.values[:len(this.values)-1]
+}
+
+func (this *MinStack) Top() int {
+	if len(this.values) == 0 {
+		return -1
+	}
+	top := this.values[len(this.values)-1]
+	return top[0]
+}
+
+func (this *MinStack) GetMin() int {
+	top := this.values[len(this.values)-1]
+	return top[1]
+}
+
+func ImplementMinStack() {
+	minStack := MinStack{
+		values: [][]int{},
+	}
+	log.Println("con co be be", minStack)
+	minStack.Push(-2)
+	minStack.Push(0)
+	minStack.Push(-3)
+	log.Println("min1", minStack.GetMin())
+	minStack.Pop()
+	log.Println("con co be be", minStack)
+	log.Println("top", minStack.Top())
+	log.Println("min2", minStack.GetMin())
+}
+
+// Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+// An input string is valid if:
+
+// Open brackets must be closed by the same type of brackets.
+// Open brackets must be closed in the correct order.
+
+// Example 1:
+// Input: s = "()"
+// Output: true
+
+// Example 2:
+// Input: s = "()[]{}"
+// Output: true
+
+// Example 3:
+// Input: s = "(]"
+// Output: false
+
+// Example 4:
+// Input: s = "([)]"
+// Output: false
+
+// Example 5:
+// Input: s = "{[]}"
+// Output: true
+
+func isValidParentheses(s string) bool {
+	if len(s) == 0 {
+		return true
+	}
+	stack := []string{}
+	mapPair := map[string]string{
+		"(": ")",
+		"[": "]",
+		"{": "}",
+	}
+	for _, v := range s {
+		parentheses := string(v)
+		if len(stack) > 0 {
+			top := stack[len(stack)-1]
+			if mapPair[top] == parentheses {
+				stack = stack[:len(stack)-1]
+				continue
+			}
+		}
+		stack = append(stack, string(v))
+	}
+	return len(stack) == 0
+}
+
+func IsValidParenthesesSolution() {
+	s := "{()}"
+	log.Println("valid or not", isValidParentheses(s))
+}
+
+//   DAILY TEMPERATURES
+// Given a list of daily temperatures T, return a list such that, for each day in the input, tells you how many days you would have to wait until a warmer temperature. If there is no future day for which this is possible, put 0 instead.
+
+// For example, given the list of temperatures T = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+
+// Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
+
+func dailyTemperatures(T []int) []int {
+	result := []int{}
+
+	return result
+}
+
+func dailyTemperaturesSolution() {
+	T := []int{1, 2, 3, 4, 5, 6}
+	log.Println(dailyTemperatures(T))
+}
