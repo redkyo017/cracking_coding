@@ -342,7 +342,7 @@ func numSquares(n int) int {
 	}
 
 	step := 0
-	queueNums := [][]int{[]int{0, n}}
+	queueNums := [][]int{{0, n}}
 
 	for len(queueNums) > 0 {
 		step++
@@ -487,8 +487,12 @@ func IsValidParenthesesSolution() {
 // Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
 
 func dailyTemperatures(T []int) []int {
-	result := []int{}
+	length := len(T)
+	result := make([]int, length)
+	for i := length - 1; i >= 0; i-- {
+		temp := T[i]
 
+	}
 	return result
 }
 
