@@ -489,14 +489,111 @@ func IsValidParenthesesSolution() {
 func dailyTemperatures(T []int) []int {
 	length := len(T)
 	result := make([]int, length)
+	stackWarmer := []int{}
 	for i := length - 1; i >= 0; i-- {
 		temp := T[i]
-
+		// for j := length - 1; j > i; j-- {
+		// 	if T[j] > temp {
+		// 		stackWarmer = append(stackWarmer, j)
+		// 	}
+		// }
+		// if len(stackWarmer) == 0 {
+		// 	result[i] = 0
+		// 	continue
+		// }
+		// result[i] = stackWarmer[len(stackWarmer)-1] - i
+		for len(stackWarmer) > 0 && temp >= T[stackWarmer[len(stackWarmer)-1]] {
+			log.Println("con co", stackWarmer)
+			stackWarmer = stackWarmer[:len(stackWarmer)-1]
+			log.Println("con co 2", stackWarmer)
+		}
+		if len(stackWarmer) > 0 {
+			result[i] = stackWarmer[len(stackWarmer)-1] - i
+		}
+		stackWarmer = append(stackWarmer, i)
 	}
 	return result
 }
 
-func dailyTemperaturesSolution() {
-	T := []int{1, 2, 3, 4, 5, 6}
+func DailyTemperaturesSolution() {
+	T := []int{73, 74, 75, 71, 69, 72, 76, 73}
 	log.Println(dailyTemperatures(T))
+}
+
+// EVALUATE REVERSE POLISH NOTATION
+
+// Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+// Valid operators are +, -, *, /. Each operand may be an integer or another expression.
+
+// Note:
+// Division between two integers should truncate toward zero.
+// The given RPN expression is always valid. That means the expression would always evaluate to a result and there won't be any divide by zero operation.
+
+// Example 1:
+// Input: ["2", "1", "+", "3", "*"]
+// Output: 9
+// Explanation: ((2 + 1) * 3) = 9
+
+// Example 2:
+// Input: ["4", "13", "5", "/", "+"]
+// Output: 6
+// Explanation: (4 + (13 / 5)) = 6
+
+// Example 3:
+// Input: ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
+// Output: 22
+// Explanation:
+//   ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+// = ((10 * (6 / (12 * -11))) + 17) + 5
+// = ((10 * (6 / -132)) + 17) + 5
+// = ((10 * 0) + 17) + 5
+// = (0 + 17) + 5
+// = 17 + 5
+// = 22
+
+func evalRPN(tokens []string) int {
+	operatorsMap := map[string]bool{
+		"+": true,
+		"-": true,
+		"*": true,
+		"/": true,
+	}
+	evalStack := []string{}
+	for k, token := range tokens {
+		log.Println("con co", token)
+		if _, ok := operatorsMap[token]; ok {
+			if len(evalStack) >= 2 {
+				operand1, er1 := strconv.Atoi(tokens[k-1])
+				operand2, er2 := strconv.Atoi(tokens[k-2])
+				log.Println("haha", operand1, operand2, er1, er2)
+				if er1 == nil && er2 == nil {
+					res := 0
+					switch token {
+					case "+":
+						res = (operand2 + operand1)
+					case "-":
+						res = (operand2 - operand1)
+					case "*":
+						res = (operand2 * operand1)
+					case "/":
+						res = (operand2 / operand1)
+					}
+					evalStack = evalStack[:len(evalStack)-2]
+					log.Println("con heo", operand1, operand2, evalStack)
+					resString := strconv.Itoa(res)
+					evalStack = append(evalStack, resString)
+					log.Println("con meo", evalStack)
+					continue
+				}
+			}
+		}
+		evalStack = append(evalStack, token)
+	}
+	result, _ := strconv.Atoi(evalStack[0])
+	return result
+}
+
+func EvalRPNSolution() {
+	tokens := []string{"2", "1", "+", "3", "*"}
+	log.Println(evalRPN(tokens))
 }

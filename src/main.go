@@ -5,6 +5,7 @@ import (
 	// "cracking_coding/sort_search"
 	// "cracking_coding/leet_code"
 	// "cracking_coding/hackerrank"
+
 	"cracking_coding/leet_code_explore"
 	"log"
 	"time"
@@ -50,7 +51,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	leet_code_explore.IsValidParenthesesSolution()
+	leet_code_explore.EvalRPNSolution()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
