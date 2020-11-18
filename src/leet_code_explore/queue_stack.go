@@ -220,29 +220,30 @@ func numIsland(grid [][]byte) int {
 }
 
 func NumIslandSolution() {
-	// grid := [][]byte{
-	// 	[]byte("11000"),
-	// 	[]byte("11000"),
-	// 	[]byte("00100"),
-	// 	[]byte("00011"),
-	// }
+	grid := [][]byte{
+		[]byte("11000"),
+		[]byte("11000"),
+		[]byte("00100"),
+		[]byte("00011"),
+	}
 	// grid := [][]byte{
 	// 	[]byte("11110"),
 	// 	[]byte("11010"),
 	// 	[]byte("11000"),
 	// 	[]byte("00000"),
 	// }
-	grid := [][]byte{
-		[]byte("111"),
-		[]byte("010"),
-		[]byte("111"),
-	}
+	// grid := [][]byte{
+	// 	[]byte("111"),
+	// 	[]byte("010"),
+	// 	[]byte("111"),
+	// }
 	// grid := [][]byte{
 	// 	[]byte("10111"),
 	// 	[]byte("10101"),
 	// 	[]byte("11101"),
 	// }
-	numIsland(grid)
+	// numIsland(grid)
+	numIslandDFS(grid)
 }
 
 // You have a lock in front of you with 4 circular wheels. Each wheel has 10 slots: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'. The wheels can rotate freely and wrap around: for example we can turn '9' to be '0', or '0' to be '9'. Each move consists of turning one wheel one slot.
@@ -592,4 +593,105 @@ func evalRPN(tokens []string) int {
 func EvalRPNSolution() {
 	tokens := []string{"2", "1", "+", "3", "*"}
 	log.Println(evalRPN(tokens))
+}
+
+// DFS - TEMPLATE I
+// TEMPLATE - RECURSION
+// /*
+//  * Return true if there is a path from cur to target.
+//  */
+//  boolean DFS(Node cur, Node target, Set<Node> visited) {
+//     return true if cur is target;
+//     for (next : each neighbor of cur) {
+//         if (next is not in visited) {
+//             add next to visted;
+//             return true if DFS(next, target, visited) == true;
+//         }
+//     }
+//     return false;
+// }
+
+// NUMBER OF ISLANDS
+// Given an m x n 2d grid map of '1's (land) and '0's (water), return the number of islands.
+
+// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+// Example 1:
+// Input: grid = [
+//   ["1","1","1","1","0"],
+//   ["1","1","0","1","0"],
+//   ["1","1","0","0","0"],
+//   ["0","0","0","0","0"]
+// ]
+// Output: 1
+
+// Example 2:
+// Input: grid = [
+//   ["1","1","0","0","0"],
+//   ["1","1","0","0","0"],
+//   ["0","0","1","0","0"],
+//   ["0","0","0","1","1"]
+// ]
+// Output: 3
+
+func numIslandDFS(grid [][]byte) int {
+	if len(grid) == 0 {
+		return 0
+	}
+	visitedNode := make(map[string]bool)
+	type nodeItem struct {
+		row int
+		col int
+	}
+	landNode := []nodeItem{}
+	islands := 0
+	for r, lines := range grid {
+		for c, value := range lines {
+			if string(value) == "1" {
+				landNode = append(landNode, nodeItem{r, c})
+			}
+		}
+	}
+	for _, v := range landNode {
+		if _, ok := visitedNode[fmt.Sprintf("%d-%d", v.row, v.col)]; ok {
+			continue
+		}
+		count := 0
+		numIslandRecursive(v.row, v.col, grid, visitedNode, &count)
+		if count > 0 {
+			islands++
+		}
+	}
+	log.Println("con co", islands)
+	return islands
+}
+
+func numIslandRecursive(r int, c int, grid [][]byte, visitedNode map[string]bool, count *int) {
+	if r < 0 || c < 0 || r > len(grid)-1 || c > len(grid[0])-1 {
+		return
+	}
+	if string(grid[r][c]) == "0" {
+		return
+	}
+	*count++
+	nextRow := r + 1
+	prevRow := r - 1
+	nextCol := c + 1
+	prevCol := c - 1
+	if _, ok := visitedNode[fmt.Sprintf("%d-%d", prevRow, c)]; !ok {
+		visitedNode[fmt.Sprintf("%d-%d", prevRow, c)] = true
+		numIslandRecursive(prevRow, c, grid, visitedNode, count)
+	}
+	if _, ok := visitedNode[fmt.Sprintf("%d-%d", nextRow, c)]; !ok {
+		visitedNode[fmt.Sprintf("%d-%d", nextRow, c)] = true
+		numIslandRecursive(nextRow, c, grid, visitedNode, count)
+	}
+	if _, ok := visitedNode[fmt.Sprintf("%d-%d", r, nextCol)]; !ok {
+		visitedNode[fmt.Sprintf("%d-%d", r, nextCol)] = true
+		numIslandRecursive(r, nextCol, grid, visitedNode, count)
+	}
+	if _, ok := visitedNode[fmt.Sprintf("%d-%d", r, prevCol)]; !ok {
+		visitedNode[fmt.Sprintf("%d-%d", r, prevCol)] = true
+		numIslandRecursive(r, prevCol, grid, visitedNode, count)
+	}
 }
