@@ -780,6 +780,10 @@ func ImplementCloneGraph() {
 
 // There are 5 ways to assign symbols to make the sum of nums be target 3.
 
+// example2
+// nums = [29,6,7,36,30,28,35,48,20,44,40,2,31,25,6,41,33,4,35,38]
+// S = 35
+
 func findTargetSumWays(nums []int, S int) int {
 	ways := 0
 	firstNum := nums[0]
@@ -791,24 +795,32 @@ func findTargetSumWays(nums []int, S int) int {
 }
 
 func sumWays(nums []int, index int, remain int, count *int, S int) {
-	log.Println("con meo", remain)
 	if index >= len(nums) {
-		return
-	}
-	if remain == S {
-		*count++
+		if remain == S {
+			*count++
+		}
 		return
 	}
 	num := nums[index]
 	case1 := remain + num
 	case2 := remain - num
+	if index == len(nums)-1 {
+		log.Println("con meo", index, case1, case2)
+		if case1 == S {
+			*count++
+		}
+		if case2 == S {
+			*count++
+		}
+		return
+	}
 	next := index + 1
 	sumWays(nums, next, case1, count, S)
 	sumWays(nums, next, case2, count, S)
 }
 
 func FindTargetSumWaysSolution() {
-	nums := []int{1, 1, 1, 1, 1}
-	S := 3
+	nums := []int{1}
+	S := 1
 	log.Println("con co", findTargetSumWays(nums, S))
 }
