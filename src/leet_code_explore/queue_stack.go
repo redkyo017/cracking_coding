@@ -699,3 +699,120 @@ func numIslandRecursive(r int, c int, grid [][]byte, visitedNode map[string]bool
 		numIslandRecursive(r, prevCol, grid, visitedNode, count)
 	}
 }
+
+// CLONE GRAPH
+
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Neighbors []*Node
+ * }
+ */
+
+type Node struct {
+	Val       int
+	Neighbors []*Node
+}
+
+func cloneGraph(node *Node) *Node {
+	visited := make(map[int]*Node)
+	return clone(node, visited)
+}
+
+func clone(node *Node, visited map[int]*Node) *Node {
+	if node == nil {
+		return nil
+	}
+	if v, ok := visited[node.Val]; ok {
+		return v
+	}
+	clonedNode := &Node{Val: node.Val, Neighbors: []*Node{}}
+	visited[clonedNode.Val] = clonedNode
+
+	for _, n := range node.Neighbors {
+		log.Println("con co", n)
+		clone := clone(n, visited)
+		if clone != nil {
+			clonedNode.Neighbors = append(clonedNode.Neighbors, clone)
+		}
+	}
+	return clonedNode
+}
+
+func ImplementCloneGraph() {
+	node1 := Node{
+		Val:       1,
+		Neighbors: []*Node{},
+	}
+	node2 := Node{
+		Val:       2,
+		Neighbors: []*Node{},
+	}
+	node3 := Node{
+		Val:       3,
+		Neighbors: []*Node{},
+	}
+	node4 := Node{
+		Val:       4,
+		Neighbors: []*Node{},
+	}
+	node1.Neighbors = append(node1.Neighbors, &node2, &node4)
+	node2.Neighbors = append(node2.Neighbors, &node1, &node3)
+	node3.Neighbors = append(node3.Neighbors, &node2, &node4)
+	node4.Neighbors = append(node4.Neighbors, &node1, &node3)
+
+	cloned := cloneGraph(&node1)
+	log.Println("con co be be", cloned)
+}
+
+// TARGET SUM
+// You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+
+// Find out how many ways to assign symbols to make sum of integers equal to target S.
+
+// Example 1:
+// Input: nums is [1, 1, 1, 1, 1], S is 3.
+// Output: 5
+// Explanation:
+
+// -1+1+1+1+1 = 3
+// +1-1+1+1+1 = 3
+// +1+1-1+1+1 = 3
+// +1+1+1-1+1 = 3
+// +1+1+1+1-1 = 3
+
+// There are 5 ways to assign symbols to make the sum of nums be target 3.
+
+func findTargetSumWays(nums []int, S int) int {
+	ways := 0
+	firstNum := nums[0]
+	case1 := 0 + firstNum
+	case2 := 0 - firstNum
+	sumWays(nums, 1, case1, &ways, S)
+	sumWays(nums, 1, case2, &ways, S)
+	return ways
+}
+
+func sumWays(nums []int, index int, remain int, count *int, S int) {
+	log.Println("con meo", remain)
+	if index >= len(nums) {
+		return
+	}
+	if remain == S {
+		*count++
+		return
+	}
+	num := nums[index]
+	case1 := remain + num
+	case2 := remain - num
+	next := index + 1
+	sumWays(nums, next, case1, count, S)
+	sumWays(nums, next, case2, count, S)
+}
+
+func FindTargetSumWaysSolution() {
+	nums := []int{1, 1, 1, 1, 1}
+	S := 3
+	log.Println("con co", findTargetSumWays(nums, S))
+}
