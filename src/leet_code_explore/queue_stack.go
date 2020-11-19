@@ -560,13 +560,11 @@ func evalRPN(tokens []string) int {
 		"/": true,
 	}
 	evalStack := []string{}
-	for k, token := range tokens {
-		log.Println("con co", token)
+	for _, token := range tokens {
 		if _, ok := operatorsMap[token]; ok {
 			if len(evalStack) >= 2 {
-				operand1, er1 := strconv.Atoi(tokens[k-1])
-				operand2, er2 := strconv.Atoi(tokens[k-2])
-				log.Println("haha", operand1, operand2, er1, er2)
+				operand1, er1 := strconv.Atoi(evalStack[len(evalStack)-1])
+				operand2, er2 := strconv.Atoi(evalStack[len(evalStack)-2])
 				if er1 == nil && er2 == nil {
 					res := 0
 					switch token {
@@ -580,10 +578,8 @@ func evalRPN(tokens []string) int {
 						res = (operand2 / operand1)
 					}
 					evalStack = evalStack[:len(evalStack)-2]
-					log.Println("con heo", operand1, operand2, evalStack)
 					resString := strconv.Itoa(res)
 					evalStack = append(evalStack, resString)
-					log.Println("con meo", evalStack)
 					continue
 				}
 			}
