@@ -765,62 +765,85 @@ func ImplementCloneGraph() {
 // TARGET SUM
 // You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
 
-// Find out how many ways to assign symbols to make sum of integers equal to target S.
+// // Find out how many ways to assign symbols to make sum of integers equal to target S.
+
+// Constraints:
+// The length of the given array is positive and will not exceed 20.
+// The sum of elements in the given array will not exceed 1000.
+// Your output answer is guaranteed to be fitted in a 32-bit integer.
 
 // Example 1:
 // Input: nums is [1, 1, 1, 1, 1], S is 3.
 // Output: 5
-// Explanation:
 
+// Explanation:
 // -1+1+1+1+1 = 3
 // +1-1+1+1+1 = 3
 // +1+1-1+1+1 = 3
 // +1+1+1-1+1 = 3
 // +1+1+1+1-1 = 3
-
 // There are 5 ways to assign symbols to make the sum of nums be target 3.
 
 // example2
 // nums = [29,6,7,36,30,28,35,48,20,44,40,2,31,25,6,41,33,4,35,38]
 // S = 35
 
+// example2
+// nums = [42,24,30,14,38,27,12,29,43,42,5,18,0,1,12,44,45,50,21,47]
+// S = 38
+
 func findTargetSumWays(nums []int, S int) int {
+	visited := map[string]bool{}
 	ways := 0
 	firstNum := nums[0]
 	case1 := 0 + firstNum
 	case2 := 0 - firstNum
-	sumWays(nums, 1, case1, &ways, S)
-	sumWays(nums, 1, case2, &ways, S)
+	case1Status := fmt.Sprintf("+%d", firstNum)
+	case2Status := fmt.Sprintf("-%d", firstNum)
+	visited[case1Status] = true
+	visited[case2Status] = true
+	visited[fmt.Sprintf("-%d", firstNum)] = true
+	sumWays(nums, 1, case1, &ways, S, visited, case1Status)
+	sumWays(nums, 1, case2, &ways, S, visited, case2Status)
 	return ways
 }
 
-func sumWays(nums []int, index int, remain int, count *int, S int) {
-	if index >= len(nums) {
-		if remain == S {
+func sumWays(nums []int, index int, sum int, count *int, S int, visited map[string]bool, prevStatus string) {
+	if index == len(nums) {
+		if sum == S {
 			*count++
 		}
 		return
-	}
-	num := nums[index]
-	case1 := remain + num
-	case2 := remain - num
-	if index == len(nums)-1 {
-		log.Println("con meo", index, case1, case2)
-		if case1 == S {
-			*count++
+	} else {
+		num := nums[index]
+		case1 := sum + num
+		case2 := sum - num
+		if index == len(nums)-1 {
+			log.Println("con meo", index, case1, case2)
+			if case1 == S {
+				*count++
+			}
+			if case2 == S {
+				*count++
+			}
+			return
 		}
-		if case2 == S {
-			*count++
+		next := index + 1
+		case1Status := fmt.Sprintf("%s+%d", prevStatus, num)
+		if _, ok := visited[case1Status]; !ok {
+			visited[case1Status] = true
+			sumWays(nums, next, case1, count, S, visited, case1Status)
 		}
-		return
+		case2Status := fmt.Sprintf("%s-%d", prevStatus, num)
+		if _, ok := visited[case2Status]; !ok {
+			visited[case2Status] = true
+			sumWays(nums, next, case2, count, S, visited, case2Status)
+		}
 	}
-	next := index + 1
-	sumWays(nums, next, case1, count, S)
-	sumWays(nums, next, case2, count, S)
 }
 
 func FindTargetSumWaysSolution() {
-	nums := []int{1}
-	S := 1
+	nums := []int{42, 24, 30, 14, 38, 27, 12, 29, 43, 42, 5, 18, 0, 1, 12, 44, 45, 50, 21, 47}
+	S := 38
 	log.Println("con co", findTargetSumWays(nums, S))
 }
