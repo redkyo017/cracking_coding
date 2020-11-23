@@ -51,7 +51,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	leet_code_explore.FindTargetSumWaysSolution()
+	leet_code_explore.ImplementDFSInorderTraversal()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }

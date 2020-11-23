@@ -793,57 +793,79 @@ func ImplementCloneGraph() {
 // S = 38
 
 func findTargetSumWays(nums []int, S int) int {
-	visited := map[string]bool{}
-	ways := 0
-	firstNum := nums[0]
-	case1 := 0 + firstNum
-	case2 := 0 - firstNum
-	case1Status := fmt.Sprintf("+%d", firstNum)
-	case2Status := fmt.Sprintf("-%d", firstNum)
-	visited[case1Status] = true
-	visited[case2Status] = true
-	visited[fmt.Sprintf("-%d", firstNum)] = true
-	sumWays(nums, 1, case1, &ways, S, visited, case1Status)
-	sumWays(nums, 1, case2, &ways, S, visited, case2Status)
-	return ways
+	visited := map[string]int{}
+	return sumWays(nums, 0, 0, S, visited)
 }
 
-func sumWays(nums []int, index int, sum int, count *int, S int, visited map[string]bool, prevStatus string) {
+func sumWays(nums []int, index int, sum int, S int, visited map[string]int) int {
 	if index == len(nums) {
 		if sum == S {
-			*count++
+			return 1
 		}
-		return
-	} else {
-		num := nums[index]
-		case1 := sum + num
-		case2 := sum - num
-		if index == len(nums)-1 {
-			log.Println("con meo", index, case1, case2)
-			if case1 == S {
-				*count++
-			}
-			if case2 == S {
-				*count++
-			}
-			return
-		}
-		next := index + 1
-		case1Status := fmt.Sprintf("%s+%d", prevStatus, num)
-		if _, ok := visited[case1Status]; !ok {
-			visited[case1Status] = true
-			sumWays(nums, next, case1, count, S, visited, case1Status)
-		}
-		case2Status := fmt.Sprintf("%s-%d", prevStatus, num)
-		if _, ok := visited[case2Status]; !ok {
-			visited[case2Status] = true
-			sumWays(nums, next, case2, count, S, visited, case2Status)
-		}
+		return 0
 	}
+	if v, ok := visited[fmt.Sprintf("%d-%d", index, sum)]; ok {
+		return v
+	}
+	add := sumWays(nums, index+1, sum+nums[index], S, visited)
+	subtract := sumWays(nums, index+1, sum-nums[index], S, visited)
+	visited[fmt.Sprintf("%d-%d", index, sum)] = add + subtract
+	return visited[fmt.Sprintf("%d-%d", index, sum)]
 }
 
 func FindTargetSumWaysSolution() {
 	nums := []int{42, 24, 30, 14, 38, 27, 12, 29, 43, 42, 5, 18, 0, 1, 12, 44, 45, 50, 21, 47}
 	S := 38
 	log.Println("con co", findTargetSumWays(nums, S))
+}
+
+// DFS - template II
+/*
+ * Return true if there is a path from cur to target.
+ */
+//  boolean DFS(int root, int target) {
+//     Set<Node> visited;
+//     Stack<Node> stack;
+//     add root to stack;
+//     while (s is not empty) {
+//         Node cur = the top element in stack;
+//         remove the cur from the stack;
+//         return true if cur is target;
+//         for (Node next : the neighbors of cur) {
+//             if (next is not in visited) {
+//                 add next to visited;
+//                 add next to stack;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+func inorderTraversal(root *TreeNode) []int {
+	stack := []int{}
+	node := root
+	for node != nil {
+		if node.Left == nil {
+			stack = append(stack, node.Val)
+			node = node.Right
+		} else {
+			node = node.Left
+		}
+	}
+	return stack
+}
+
+func ImplementDFSInorderTraversal() {
+	node1 := TreeNode{1, nil, nil}
+	node2 := TreeNode{2, nil, nil}
+	node3 := TreeNode{3, nil, nil}
+	node1.Right = &node2
+	node2.Left = &node3
+	log.Println("con co", inorderTraversal(&node1))
 }
