@@ -854,9 +854,8 @@ func inorderTraversal(root *TreeNode) []int {
 		if node.Left == nil {
 			stack = append(stack, node.Val)
 			node = node.Right
-		} else {
-			node = node.Left
 		}
+		node = node.Left
 	}
 	return stack
 }
