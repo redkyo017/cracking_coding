@@ -848,17 +848,37 @@ type TreeNode struct {
 }
 
 func inorderTraversal(root *TreeNode) []int {
-	stack := []int{}
-	node := root
-	for node != nil {
-		if node.Left == nil {
-			stack = append(stack, node.Val)
-			node = node.Right
-		} else {
-			node = node.Left
+	res := []int{}
+	stack := []*TreeNode{}
+	visited := map[int]bool{}
+	stack = append(stack, root)
+	log.Println("con meo", stack)
+	for len(stack) > 0 {
+		var current *TreeNode
+		last := stack[len(stack)-1]
+		current = last
+		for current != nil {
+			if current.Left != nil {
+				if _, ok := visited[current.Left.Val]; !ok {
+					current = current.Left
+					stack = append(stack, current)
+					continue
+				}
+			}
+			log.Println("con ga", current)
+			res = append(res, current.Val)
+			visited[current.Val] = true
+			stack = stack[:len(stack)-1]
+			log.Println("con co be be", res, visited, stack)
+			if current.Right != nil {
+				current = current.Right
+				stack = append(stack, current)
+				log.Println("here", current)
+			}
+			log.Println("con heo", stack)
 		}
 	}
-	return stack
+	return res
 }
 
 func ImplementDFSInorderTraversal() {
