@@ -849,33 +849,40 @@ type TreeNode struct {
 
 func inorderTraversal(root *TreeNode) []int {
 	res := []int{}
+	if root == nil {
+		return res
+	}
+	if root.Left == nil && root.Right == nil {
+		return []int{root.Val}
+	}
 	stack := []*TreeNode{}
-	visited := map[int]bool{}
+	visited := map[*TreeNode]bool{}
 	stack = append(stack, root)
-	log.Println("con meo", stack)
 	for len(stack) > 0 {
 		var current *TreeNode
 		last := stack[len(stack)-1]
 		current = last
 		for current != nil {
 			if current.Left != nil {
-				if _, ok := visited[current.Left.Val]; !ok {
+				if _, ok := visited[current.Left]; !ok {
 					current = current.Left
 					stack = append(stack, current)
 					continue
 				}
 			}
-			log.Println("con ga", current)
 			res = append(res, current.Val)
-			visited[current.Val] = true
-			stack = stack[:len(stack)-1]
-			log.Println("con co be be", res, visited, stack)
+			visited[current] = true
+			if len(stack) > 0 {
+				stack = stack[:len(stack)-1]
+			}
 			if current.Right != nil {
 				current = current.Right
 				stack = append(stack, current)
-				log.Println("here", current)
+			} else if len(stack) > 0 {
+				current = stack[len(stack)-1]
+			} else {
+				current = nil
 			}
-			log.Println("con heo", stack)
 		}
 	}
 	return res
