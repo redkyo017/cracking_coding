@@ -911,3 +911,129 @@ func ImplementDFSInorderTraversal() {
 // You must use only standard operations of a stack, which means only push to top, peek/pop from top, size, and is empty operations are valid.
 // Depending on your language, the stack may not be supported natively. You may simulate a stack using a list or deque (double-ended queue) as long as you use only a stack's standard operations.
 // Follow-up: Can you implement the queue such that each operation is amortized O(1) time complexity? In other words, performing n operations will take overall O(n) time even if one of those operations may take longer.
+
+type MyQueue struct {
+	values []int
+}
+
+/** Initialize your data structure here. */
+func QuSConstructor() MyQueue {
+	q := MyQueue{values: []int{}}
+	return q
+}
+
+/** Push element x to the back of queue. */
+func (this *MyQueue) Push(x int) {
+	this.values = append(this.values, x)
+}
+
+/** Removes the element from in front of queue and returns that element. */
+func (this *MyQueue) Pop() int {
+	if this.Empty() {
+		return -1
+	}
+	pop := this.values[0]
+	this.values = this.values[1:]
+	return pop
+}
+
+/** Get the front element. */
+func (this *MyQueue) Peek() int {
+	if this.Empty() {
+		return -1
+	}
+	return this.values[0]
+}
+
+/** Returns whether the queue is empty. */
+func (this *MyQueue) Empty() bool {
+	return len(this.values) == 0
+}
+
+func ImplementQueueUsingStack() {
+	queue := QuSConstructor()
+	queue.Push(7)
+	queue.Push(8)
+	queue.Push(9)
+	param_2 := queue.Pop()
+	param_3 := queue.Peek()
+	param_4 := queue.Empty()
+	log.Println(param_2, param_3, param_4)
+}
+
+type MyStack struct {
+	values []int
+}
+
+/** Initialize your data structure here. */
+func SuQConstructor() MyStack {
+	s := MyStack{values: []int{}}
+	return s
+}
+
+/** Push element x onto stack. */
+func (this *MyStack) Push(x int) {
+	this.values = append(this.values, x)
+}
+
+/** Removes the element on top of the stack and returns that element. */
+func (this *MyStack) Pop() int {
+	if this.Empty() {
+		return -1
+	}
+	pop := this.values[len(this.values)-1]
+	this.values = this.values[:len(this.values)-1]
+	return pop
+}
+
+/** Get the top element. */
+func (this *MyStack) Top() int {
+	if this.Empty() {
+		return -1
+	}
+	return this.values[len(this.values)-1]
+}
+
+/** Returns whether the stack is empty. */
+func (this *MyStack) Empty() bool {
+	return len(this.values) == 0
+}
+
+func ImplementStackUsingQueue() {
+	stack := SuQConstructor()
+	stack.Push(7)
+	stack.Push(8)
+	stack.Push(9)
+	param_2 := stack.Pop()
+	param_3 := stack.Top()
+	param_4 := stack.Empty()
+	log.Println(param_2, param_3, param_4)
+}
+
+// DECODE STRING
+// Given an encoded string, return its decoded string.
+
+// The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+// You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+// Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+// Example 1:
+// Input: s = "3[a]2[bc]"
+// Output: "aaabcbc"
+
+// Example 2:
+// Input: s = "3[a2[c]]"
+// Output: "accaccacc"
+
+// Example 3:
+// Input: s = "2[abc]3[cd]ef"
+// Output: "abcabccdcdcdef"
+
+// Example 4:
+// Input: s = "abc3[cd]xyz"
+// Output: "abccdcdcdxyz"
+
+func decodeString(s string) string {
+
+}
