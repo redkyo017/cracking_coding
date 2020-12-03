@@ -1037,13 +1037,57 @@ func ImplementStackUsingQueue() {
 func decodeString(s string) string {
 	result := ""
 	stack := []string{}
+	numMap := map[string]bool{}
+	for i := 0; i < 10; i++ {
+		numMap[fmt.Sprintf("%d", i)] = true
+	}
+
 	for _, v := range s {
-		stack = append(stack, string(v))
+		if string(v) == "]" {
+			decoded := ""
+			for len(stack) > 0 {
+				s := stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+				if s == "[" {
+					numString := ""
+					for len(stack) > 0 && numMap[stack[len(stack)-1]] == true {
+						num := stack[len(stack)-1]
+						numString = num + numString
+						stack = stack[:len(stack)-1]
+					}
+
+					if n, err := strconv.Atoi(numString); err == nil {
+						str := decoded
+						for i := 1; i < n; i++ {
+							decoded += str
+						}
+					}
+					break
+				}
+				decoded = fmt.Sprintf("%s%s", s, decoded)
+			}
+			if decoded != "" {
+				stack = append(stack, decoded)
+			}
+		} else {
+			stack = append(stack, string(v))
+		}
+	}
+	for _, v := range stack {
+		result = fmt.Sprintf("%s%s", result, v)
 	}
 	return result
 }
 
 func DecodeStringSolution() {
-	s := "3[a2[c]]"
-	log.Println(decodeString(s))
+
+	examples := [][]string{
+		[]string{"3[a2[c]]", "accaccacc"},
+		[]string{"3[a]2[bc]", "aaabcbc"},
+		[]string{"2[abc]3[cd]ef", "abcabccdcdcdef"},
+		[]string{"abc3[cd]xyz", "abccdcdcdxyz"},
+		[]string{"100[leetcode]", "leetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcodeleetcode"},
+	}
+	decoded := decodeString(examples[4][0])
+	log.Println(decoded, decoded == examples[4][1])
 }
