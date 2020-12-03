@@ -1035,5 +1035,15 @@ func ImplementStackUsingQueue() {
 // Output: "abccdcdcdxyz"
 
 func decodeString(s string) string {
+	result := ""
+	stack := []string{}
+	for _, v := range s {
+		stack = append(stack, string(v))
+	}
+	return result
+}
 
+func DecodeStringSolution() {
+	s := "3[a2[c]]"
+	log.Println(decodeString(s))
 }
