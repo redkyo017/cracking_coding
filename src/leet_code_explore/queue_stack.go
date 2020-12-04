@@ -1091,3 +1091,149 @@ func DecodeStringSolution() {
 	decoded := decodeString(examples[4][0])
 	log.Println(decoded, decoded == examples[4][1])
 }
+
+// FLOOD FILL
+// An image is represented by a 2-D array of integers, each integer representing the pixel value of the image (from 0 to 65535).
+
+// Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+
+// To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the newColor.
+
+// At the end, return the modified image.
+// Example 1:
+// Input:
+// image = [[1,1,1],[1,1,0],[1,0,1]]
+// sr = 1, sc = 1, newColor = 2
+// Output: [[2,2,2],[2,2,0],[2,0,1]]
+func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
+	log.Println("con heo", image)
+	rowLength := len(image)
+	colLength := len(image[0])
+	log.Println("con co be be", rowLength, colLength)
+	if colLength == 0 && rowLength == 0 {
+		return [][]int{}
+	}
+	visited := map[string]bool{}
+	queue := [][2]int{}
+	startColor := image[sr][sc]
+	queue = append(queue, [2]int{sr, sc})
+	visited[fmt.Sprintf("%d-%d", sr, sc)] = true
+	for len(queue) > 0 {
+		size := len(queue)
+		for i := 0; i < size; i++ {
+			pixel := queue[0]
+			r := pixel[0]
+			c := pixel[1]
+			image[r][c] = newColor
+			top := r - 1
+			bottom := r + 1
+			left := c - 1
+			right := c + 1
+			if top >= 0 && visited[fmt.Sprintf("%d-%d", top, c)] != true && image[top][c] == startColor {
+				queue = append(queue, [2]int{top, c})
+				visited[fmt.Sprintf("%d-%d", top, c)] = true
+			}
+			if bottom < rowLength && visited[fmt.Sprintf("%d-%d", bottom, c)] != true && image[bottom][c] == startColor {
+				queue = append(queue, [2]int{bottom, c})
+				visited[fmt.Sprintf("%d-%d", bottom, c)] = true
+			}
+			if left >= 0 && visited[fmt.Sprintf("%d-%d", r, left)] != true && image[r][left] == startColor {
+				queue = append(queue, [2]int{r, left})
+				visited[fmt.Sprintf("%d-%d", r, left)] = true
+			}
+			if right < colLength && visited[fmt.Sprintf("%d-%d", r, right)] != true && image[r][right] == startColor {
+				queue = append(queue, [2]int{r, right})
+				visited[fmt.Sprintf("%d-%d", r, right)] = true
+			}
+			queue = queue[1:]
+		}
+	}
+	log.Println("con meo", image)
+	return image
+}
+
+func FloodFillSolution() {
+	image := [][]int{
+		[]int{1, 1, 1},
+		[]int{1, 1, 0},
+		[]int{1, 0, 1},
+	}
+	// image := [][]int{
+	// 	[]int{0, 0, 0},
+	// 	[]int{0, 0, 0},
+	// }
+	log.Println(floodFill(image, 1, 1, 2))
+}
+
+// 01 MATRIX
+// Given a matrix consists of 0 and 1, find the distance of the nearest 0 for each cell.
+// The distance between two adjacent cells is 1.
+// Example 1:
+// Input:
+// [[0,0,0],
+//  [0,1,0],
+//  [0,0,0]]
+
+// Output:
+// [[0,0,0],
+//  [0,1,0],
+//  [0,0,0]]
+
+// Example 2:
+// Input:
+// [[0,0,0],
+//  [0,1,0],
+//  [1,1,1]]
+
+// Output:
+// [[0,0,0],
+//  [0,1,0],
+//  [1,2,1]]
+
+func updateMatrix(matrix [][]int) [][]int {
+	rowSize := len(matrix)
+	colSize := len(matrix[0])
+	result := [][]int{}
+	if rowSize == 0 && colSize == 0 {
+		return result
+	}
+	visited := map[string]int{}
+	queue := [][2]int{}
+	log.Println("con meo", rowSize, colSize)
+	queue = append(queue, [2]int{0, 0})
+	if matrix[0][0] == 0 {
+		visited[fmt.Sprintf("%d-%d", 0, 0)] = 0
+	}
+	for len(queue) > 0 {
+		size := len(queue)
+		for i := 0; i < size; i++ {
+			item := queue[0]
+			r := item[0]
+			c := item[1]
+			// top := r - 1
+			// bottom := r + 1
+			// left := c - 1
+			// right := c + 1
+			if _, ok := visited[fmt.Sprintf("%d-%d", r, c)]; !ok {
+				if matrix[r][c] == 0 {
+					visited[fmt.Sprintf("%d-%d", r, c)] = 0
+					matrix[r][c] = 0
+				} else {
+
+				}
+			}
+			queue = queue[1:]
+		}
+	}
+	log.Println("con meo", matrix)
+	return matrix
+}
+
+func UpdateMatrixSolution() {
+	matrix := [][]int{
+		[]int{0, 0, 0},
+		[]int{0, 1, 0},
+		[]int{0, 0, 0},
+	}
+	log.Println(updateMatrix(matrix))
+}
