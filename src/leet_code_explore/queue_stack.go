@@ -1199,7 +1199,6 @@ func updateMatrix(matrix [][]int) [][]int {
 	}
 	visited := map[string]int{}
 	queue := [][2]int{}
-	log.Println("con meo", rowSize, colSize)
 	queue = append(queue, [2]int{0, 0})
 	if matrix[0][0] == 0 {
 		visited[fmt.Sprintf("%d-%d", 0, 0)] = 0
@@ -1211,29 +1210,70 @@ func updateMatrix(matrix [][]int) [][]int {
 			r := item[0]
 			c := item[1]
 
+			top := r - 1
+			bottom := r + 1
+			left := c - 1
+			right := c + 1
 			if _, ok := visited[fmt.Sprintf("%d-%d", r, c)]; !ok {
 				if matrix[r][c] == 0 {
 					visited[fmt.Sprintf("%d-%d", r, c)] = 0
-					matrix[r][c] = 0
 				} else {
-					top := r - 1
-					bottom := r + 1
-					left := c - 1
-					right := c + 1
+					min := 99999
+					if v, ok := visited[fmt.Sprintf("%d-%d", top, c)]; ok && v < min {
+						min = v
+					}
+					if v, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; ok && v < min {
+						min = v
+					}
+					if v, ok := visited[fmt.Sprintf("%d-%d", r, left)]; ok && v < min {
+						min = v
+					}
+					if v, ok := visited[fmt.Sprintf("%d-%d", r, right)]; ok && v < min {
+						min = v
+					}
+					if min != 99999 {
+						visited[fmt.Sprintf("%d-%d", r, c)] = min + 1
+						matrix[r][c] = min + 1
+					}
 				}
+			}
+
+			if _, ok := visited[fmt.Sprintf("%d-%d", top, c)]; !ok && top >= 0 {
+				queue = append(queue, [2]int{top, c})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; !ok && bottom < rowSize {
+				queue = append(queue, [2]int{bottom, c})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", r, left)]; !ok && left >= 0 {
+				queue = append(queue, [2]int{r, left})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", r, right)]; !ok && right < colSize {
+				queue = append(queue, [2]int{r, right})
 			}
 			queue = queue[1:]
 		}
 	}
-	log.Println("con meo", matrix)
+	for _, v := range matrix {
+		log.Println(v)
+	}
 	return matrix
 }
 
 func UpdateMatrixSolution() {
 	matrix := [][]int{
-		[]int{0, 0, 0},
-		[]int{0, 1, 0},
-		[]int{0, 0, 0},
+		[]int{0, 1, 0, 1, 1},
+		[]int{1, 1, 0, 0, 1},
+		[]int{0, 0, 0, 1, 0},
+		[]int{1, 0, 1, 1, 1},
+		[]int{1, 0, 0, 0, 1},
 	}
 	log.Println(updateMatrix(matrix))
 }
+
+// [
+// 	[0,1,0,1,2],
+// 	[1,1,0,0,1],
+// 	[0,0,0,1,0],
+// 	[1,0,1,1,1],
+// 	[1,0,0,0,1]
+// ]
