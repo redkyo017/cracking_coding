@@ -1210,16 +1210,16 @@ func updateMatrix(matrix [][]int) [][]int {
 			item := queue[0]
 			r := item[0]
 			c := item[1]
-			// top := r - 1
-			// bottom := r + 1
-			// left := c - 1
-			// right := c + 1
+
 			if _, ok := visited[fmt.Sprintf("%d-%d", r, c)]; !ok {
 				if matrix[r][c] == 0 {
 					visited[fmt.Sprintf("%d-%d", r, c)] = 0
 					matrix[r][c] = 0
 				} else {
-
+					top := r - 1
+					bottom := r + 1
+					left := c - 1
+					right := c + 1
 				}
 			}
 			queue = queue[1:]
