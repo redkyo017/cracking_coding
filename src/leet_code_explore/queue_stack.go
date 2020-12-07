@@ -1211,9 +1211,30 @@ func updateMatrix(matrix [][]int) [][]int {
 			c := item[1]
 
 			top := r - 1
+			topValue := 0
 			bottom := r + 1
+			bottomValue := 0
 			left := c - 1
+			leftValue := 0
 			right := c + 1
+			rightValue := 0
+			if _, ok := visited[fmt.Sprintf("%d-%d", top, c)]; !ok && top >= 0 {
+				topValue = matrix[top][c]
+				queue = append(queue, [2]int{top, c})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; !ok && bottom < rowSize {
+				bottomValue = matrix[bottom][c]
+				queue = append(queue, [2]int{bottom, c})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", r, left)]; !ok && left >= 0 {
+				leftValue = matrix[r][left]
+				queue = append(queue, [2]int{r, left})
+			}
+			if _, ok := visited[fmt.Sprintf("%d-%d", r, right)]; !ok && right < colSize {
+				rightValue = matrix[r][right]
+				queue = append(queue, [2]int{r, right})
+			}
+
 			if _, ok := visited[fmt.Sprintf("%d-%d", r, c)]; !ok {
 				if matrix[r][c] == 0 {
 					visited[fmt.Sprintf("%d-%d", r, c)] = 0
@@ -1231,6 +1252,7 @@ func updateMatrix(matrix [][]int) [][]int {
 					if v, ok := visited[fmt.Sprintf("%d-%d", r, right)]; ok && v < min {
 						min = v
 					}
+					log.Println("con co", min, r, c)
 					if min != 99999 {
 						visited[fmt.Sprintf("%d-%d", r, c)] = min + 1
 						matrix[r][c] = min + 1
@@ -1238,18 +1260,6 @@ func updateMatrix(matrix [][]int) [][]int {
 				}
 			}
 
-			if _, ok := visited[fmt.Sprintf("%d-%d", top, c)]; !ok && top >= 0 {
-				queue = append(queue, [2]int{top, c})
-			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; !ok && bottom < rowSize {
-				queue = append(queue, [2]int{bottom, c})
-			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", r, left)]; !ok && left >= 0 {
-				queue = append(queue, [2]int{r, left})
-			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", r, right)]; !ok && right < colSize {
-				queue = append(queue, [2]int{r, right})
-			}
 			queue = queue[1:]
 		}
 	}
