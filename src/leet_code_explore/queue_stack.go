@@ -1197,85 +1197,53 @@ func updateMatrix(matrix [][]int) [][]int {
 	if rowSize == 0 && colSize == 0 {
 		return result
 	}
-	visited := map[string]int{}
 	queue := [][2]int{}
-	queue = append(queue, [2]int{0, 0})
-	if matrix[0][0] == 0 {
-		visited[fmt.Sprintf("%d-%d", 0, 0)] = 0
-	}
-	for len(queue) > 0 {
-		size := len(queue)
-		for i := 0; i < size; i++ {
-			item := queue[0]
-			r := item[0]
-			c := item[1]
-
-			top := r - 1
-			topValue := 0
-			bottom := r + 1
-			bottomValue := 0
-			left := c - 1
-			leftValue := 0
-			right := c + 1
-			rightValue := 0
-			if _, ok := visited[fmt.Sprintf("%d-%d", top, c)]; !ok && top >= 0 {
-				topValue = matrix[top][c]
-				queue = append(queue, [2]int{top, c})
+	for i := 0; i < rowSize; i++ {
+		for j := 0; j < colSize; j++ {
+			if matrix[i][j] == 0 {
+				result[i][j] = 0
+				queue = append(queue, [2]int{i, j})
+			} else {
+				result[i][j] = 99999
 			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; !ok && bottom < rowSize {
-				bottomValue = matrix[bottom][c]
-				queue = append(queue, [2]int{bottom, c})
-			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", r, left)]; !ok && left >= 0 {
-				leftValue = matrix[r][left]
-				queue = append(queue, [2]int{r, left})
-			}
-			if _, ok := visited[fmt.Sprintf("%d-%d", r, right)]; !ok && right < colSize {
-				rightValue = matrix[r][right]
-				queue = append(queue, [2]int{r, right})
-			}
-
-			if _, ok := visited[fmt.Sprintf("%d-%d", r, c)]; !ok {
-				if matrix[r][c] == 0 {
-					visited[fmt.Sprintf("%d-%d", r, c)] = 0
-				} else {
-					min := 99999
-					if v, ok := visited[fmt.Sprintf("%d-%d", top, c)]; ok && v < min {
-						min = v
-					}
-					if v, ok := visited[fmt.Sprintf("%d-%d", bottom, c)]; ok && v < min {
-						min = v
-					}
-					if v, ok := visited[fmt.Sprintf("%d-%d", r, left)]; ok && v < min {
-						min = v
-					}
-					if v, ok := visited[fmt.Sprintf("%d-%d", r, right)]; ok && v < min {
-						min = v
-					}
-					log.Println("con co", min, r, c)
-					if min != 99999 {
-						visited[fmt.Sprintf("%d-%d", r, c)] = min + 1
-						matrix[r][c] = min + 1
-					}
-				}
-			}
-
-			queue = queue[1:]
 		}
 	}
-	for _, v := range matrix {
+	pos := [4][2]int{
+		[2]int{-1, 0},
+		[2]int{0, -1},
+		[2]int{0, 1},
+		[2]int{1, 0},
+	}
+	for len(queue) > 0 {
+		cell := queue[0]
+		queue = queue[1:]
+
+	}
+	for _, v := range result {
 		log.Println(v)
 	}
-	return matrix
+	return result
 }
 
 func UpdateMatrixSolution() {
+	// matrix := [][]int{
+	// 	[]int{0, 1, 0, 1, 1},
+	// 	[]int{1, 1, 0, 0, 1},
+	// 	[]int{0, 0, 0, 1, 0},
+	// 	[]int{1, 0, 1, 1, 1},
+	// 	[]int{1, 0, 0, 0, 1},
+	// }
 	matrix := [][]int{
-		[]int{0, 1, 0, 1, 1},
-		[]int{1, 1, 0, 0, 1},
-		[]int{0, 0, 0, 1, 0},
-		[]int{1, 0, 1, 1, 1},
-		[]int{1, 0, 0, 0, 1},
+		[]int{1, 0, 1, 1, 0, 0, 1, 0, 0, 1},
+		[]int{0, 1, 1, 0, 1, 0, 1, 0, 1, 1},
+		[]int{1, 0, 1, 0, 1, 1, 1, 1, 1, 1},
+		[]int{0, 1, 0, 1, 1, 0, 0, 0, 0, 1},
+		[]int{0, 0, 1, 0, 1, 1, 1, 0, 1, 0},
+		[]int{0, 0, 1, 0, 1, 1, 1, 0, 1, 0},
+		[]int{0, 1, 0, 1, 0, 1, 0, 0, 1, 1},
+		[]int{1, 0, 0, 0, 1, 1, 1, 1, 0, 1},
+		[]int{1, 1, 1, 1, 1, 1, 1, 0, 1, 0},
+		[]int{1, 1, 1, 1, 0, 1, 0, 0, 1, 1},
 	}
 	log.Println(updateMatrix(matrix))
 }
@@ -1286,4 +1254,17 @@ func UpdateMatrixSolution() {
 // 	[0,0,0,1,0],
 // 	[1,0,1,1,1],
 // 	[1,0,0,0,1]
+// ]
+
+// [
+// 	[1,0,1,1,0,0,1,0,0,1],
+// 	[0,1,1,0,1,0,1,0,1,1],
+// 	[0,0,1,0,1,0,0,1,0,0],
+// 	[1,0,1,0,1,1,1,1,1,1],
+// 	[0,1,0,1,1,0,0,0,0,1],
+// 	[0,0,1,0,1,1,1,0,1,0],
+// 	[0,1,0,1,0,1,0,0,1,1],
+// 	[1,0,0,0,1,2,1,1,0,1],
+// 	[2,1,1,1,1,2,1,0,1,0],
+// 	[3,2,2,1,0,1,0,0,1,1]
 // ]
