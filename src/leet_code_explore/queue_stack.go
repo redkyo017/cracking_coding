@@ -1199,16 +1199,21 @@ func updateMatrix(matrix [][]int) [][]int {
 	}
 	queue := [][2]int{}
 	for i := 0; i < rowSize; i++ {
+		row := []int{}
 		for j := 0; j < colSize; j++ {
+
 			if matrix[i][j] == 0 {
-				result[i][j] = 0
+				// result[i][j] = 0
+				row = append(row, 0)
 				queue = append(queue, [2]int{i, j})
 			} else {
-				result[i][j] = 99999
+				row = append(row, 99999)
+				// result[i][j] = 99999
 			}
 		}
+		result = append(result, row)
 	}
-	pos := [4][2]int{
+	neighborPosition := [4][2]int{
 		[2]int{-1, 0},
 		[2]int{0, -1},
 		[2]int{0, 1},
@@ -1216,35 +1221,36 @@ func updateMatrix(matrix [][]int) [][]int {
 	}
 	for len(queue) > 0 {
 		cell := queue[0]
+		r := cell[0]
+		c := cell[1]
 		queue = queue[1:]
-
+		for i := 0; i < 4; i++ {
+			neighbor := neighborPosition[i]
+			neighborRow := r + neighbor[0]
+			neighborCol := c + neighbor[1]
+			if neighborRow >= 0 && neighborCol >= 0 && neighborRow < rowSize && neighborCol < colSize {
+				if result[neighborRow][neighborCol] > result[r][c]+1 {
+					result[neighborRow][neighborCol] = result[r][c] + 1
+					queue = append(queue, [2]int{neighborRow, neighborCol})
+				}
+			}
+		}
 	}
-	for _, v := range result {
-		log.Println(v)
-	}
+	// for _, v := range result {
+	// 	log.Println(v)
+	// }
 	return result
 }
 
 func UpdateMatrixSolution() {
-	// matrix := [][]int{
-	// 	[]int{0, 1, 0, 1, 1},
-	// 	[]int{1, 1, 0, 0, 1},
-	// 	[]int{0, 0, 0, 1, 0},
-	// 	[]int{1, 0, 1, 1, 1},
-	// 	[]int{1, 0, 0, 0, 1},
-	// }
 	matrix := [][]int{
-		[]int{1, 0, 1, 1, 0, 0, 1, 0, 0, 1},
-		[]int{0, 1, 1, 0, 1, 0, 1, 0, 1, 1},
-		[]int{1, 0, 1, 0, 1, 1, 1, 1, 1, 1},
-		[]int{0, 1, 0, 1, 1, 0, 0, 0, 0, 1},
-		[]int{0, 0, 1, 0, 1, 1, 1, 0, 1, 0},
-		[]int{0, 0, 1, 0, 1, 1, 1, 0, 1, 0},
-		[]int{0, 1, 0, 1, 0, 1, 0, 0, 1, 1},
-		[]int{1, 0, 0, 0, 1, 1, 1, 1, 0, 1},
-		[]int{1, 1, 1, 1, 1, 1, 1, 0, 1, 0},
-		[]int{1, 1, 1, 1, 0, 1, 0, 0, 1, 1},
+		[]int{0, 1, 0, 1, 1},
+		[]int{1, 1, 0, 0, 1},
+		[]int{0, 0, 0, 1, 0},
+		[]int{1, 0, 1, 1, 1},
+		[]int{1, 0, 0, 0, 1},
 	}
+
 	log.Println(updateMatrix(matrix))
 }
 
@@ -1256,15 +1262,59 @@ func UpdateMatrixSolution() {
 // 	[1,0,0,0,1]
 // ]
 
-// [
-// 	[1,0,1,1,0,0,1,0,0,1],
-// 	[0,1,1,0,1,0,1,0,1,1],
-// 	[0,0,1,0,1,0,0,1,0,0],
-// 	[1,0,1,0,1,1,1,1,1,1],
-// 	[0,1,0,1,1,0,0,0,0,1],
-// 	[0,0,1,0,1,1,1,0,1,0],
-// 	[0,1,0,1,0,1,0,0,1,1],
-// 	[1,0,0,0,1,2,1,1,0,1],
-// 	[2,1,1,1,1,2,1,0,1,0],
-// 	[3,2,2,1,0,1,0,0,1,1]
-// ]
+// KEYS AND ROOMS
+// There are N rooms and you start in room 0.  Each room has a distinct number in 0, 1, 2, ..., N-1, and each room may have some keys to access the next room.
+// Formally, each room i has a list of keys rooms[i], and each key rooms[i][j] is an integer in [0, 1, ..., N-1] where N = rooms.length.  A key rooms[i][j] = v opens the room with number v.
+// Initially, all the rooms start locked (except for room 0).
+// You can walk back and forth between rooms freely.
+// Return true if and only if you can enter every room
+
+// Example 1:
+// Input: [[1],[2],[3],[]]
+// Output: true
+// Explanation:
+// We start in room 0, and pick up key 1.
+// We then go to room 1, and pick up key 2.
+// We then go to room 2, and pick up key 3.
+// We then go to room 3.  Since we were able to go to every room, we return true.
+
+// Example 2:
+// Input: [[1,3],[3,0,1],[2],[0]]
+// Output: false
+// Explanation: We can't enter the room with number 2.
+
+func canVisitAllRooms(rooms [][]int) bool {
+	if len(rooms) <= 0 {
+		return false
+	}
+	visited := map[int]bool{}
+	stack := [][]int{}
+	stack = append(stack, rooms[0])
+	step := 0
+	visited[0] = true
+	for len(stack) > 0 {
+		if step == len(rooms)-1 {
+			return true
+		}
+		roomkeys := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		step += 1
+		for _, v := range roomkeys {
+			if _, ok := visited[v]; !ok {
+				stack = append(stack, rooms[v])
+				visited[v] = true
+			}
+		}
+	}
+	return false
+}
+
+func CanVisitAllRoomsSolution() {
+	rooms := [][]int{
+		[]int{1, 3},
+		[]int{3, 0, 1},
+		[]int{2},
+		[]int{0},
+	}
+	log.Println(canVisitAllRooms(rooms))
+}
