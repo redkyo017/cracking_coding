@@ -72,6 +72,7 @@ func SwapPairsImplement() {
 }
 
 func reverseList(head *ListNode) *ListNode {
+	// SOLUTION 1: ITERATIVE
 	// var newRevertedNode *ListNode
 	// for head != nil {
 	// 	var newNode ListNode
@@ -81,15 +82,15 @@ func reverseList(head *ListNode) *ListNode {
 	// 	head = head.Next
 	// }
 	// return newRevertedNode
-	if head.Next == nil {
+	// SOLUTION 2: RECURSIVE
+	if head == nil || head.Next == nil {
 		return head
 	}
-	var newRevertedNode *ListNode
 	node := reverseList(head.Next)
-	node.Next = head
+	head.Next.Next = head
+	head.Next = nil
 
-	newRevertedNode = node
-	return newRevertedNode
+	return node
 }
 
 func ReverseListEmplement() {
