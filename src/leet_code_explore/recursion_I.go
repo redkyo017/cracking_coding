@@ -407,6 +407,28 @@ func generateTrees(n int) []*TreeNode {
 	if n == 0 {
 		return list
 	}
+	list = generateRecursive(1, n)
+	log.Println(list)
+	return list
+}
 
+func generateRecursive(start int, end int) []*TreeNode {
+	list := []*TreeNode{}
+	if start > end {
+		return list
+	}
+	for i := start; i <= end; i++ {
+		leftSubTree := generateRecursive(start, i-1)
+		rightSubTree := generateRecursive(i+1, end)
+
+		for j := 0; j < len(leftSubTree); j++ {
+			left := leftSubTree[j]
+			for k := 0; k < len(rightSubTree); k++ {
+				right := rightSubTree[k]
+				node := TreeNode{i, left, right}
+				list = append(list, &node)
+			}
+		}
+	}
 	return list
 }
