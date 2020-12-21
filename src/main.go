@@ -6,6 +6,7 @@ import (
 	// "cracking_coding/leet_code"
 	// "cracking_coding/hackerrank"
 
+	"leet_code_explore"
 	"log"
 	"time"
 )
@@ -50,7 +51,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	leet_code_explore.generateTrees(3)
+	leet_code_explore.IsValidBSTImplement()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }

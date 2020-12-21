@@ -402,30 +402,33 @@ func KthGrammarSolution() {
 //     /     /       \                 \
 //    2     1         2                 3
 
+func GenerateTreesImplement() {
+	listTrees := generateTrees(4)
+	log.Println("con co", listTrees, len(listTrees))
+}
+
 func generateTrees(n int) []*TreeNode {
 	list := []*TreeNode{}
 	if n == 0 {
 		return list
 	}
 	list = generateRecursive(1, n)
-	log.Println(list)
 	return list
 }
 
 func generateRecursive(start int, end int) []*TreeNode {
-	list := []*TreeNode{}
+	var list []*TreeNode
 	if start > end {
+		list = append(list, nil)
 		return list
 	}
 	for i := start; i <= end; i++ {
 		leftSubTree := generateRecursive(start, i-1)
 		rightSubTree := generateRecursive(i+1, end)
 
-		for j := 0; j < len(leftSubTree); j++ {
-			left := leftSubTree[j]
-			for k := 0; k < len(rightSubTree); k++ {
-				right := rightSubTree[k]
-				node := TreeNode{i, left, right}
+		for _, l := range leftSubTree {
+			for _, r := range rightSubTree {
+				node := TreeNode{i, l, r}
 				list = append(list, &node)
 			}
 		}
