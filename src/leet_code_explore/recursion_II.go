@@ -93,7 +93,7 @@ func searchMatrix(matrix [][]int, target int) bool {
 	colPivot, rowPivot := col/2, row/2
 	if matrix[rowPivot][colPivot] == target {
 		return true
-	} else if matrix[rowPivot][colPivot] < target {
+	} else if target < matrix[rowPivot][colPivot] {
 		return searchMatrix(matrix[:rowPivot][:colPivot], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
 	} else {
 		return searchMatrix(matrix[rowPivot:][colPivot:], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
