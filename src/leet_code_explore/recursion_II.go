@@ -82,9 +82,36 @@ func IsValidBSTImplement() {
 // Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
 // Output: false
 func searchMatrix(matrix [][]int, target int) bool {
-
+	row := len(matrix)
+	if row <= 0 {
+		return false
+	}
+	col := len(matrix[0])
+	if col <= 0 {
+		return false
+	}
+	colPivot, rowPivot := col/2, row/2
+	if matrix[rowPivot][colPivot] == target {
+		return true
+	} else if matrix[rowPivot][colPivot] < target {
+		return searchMatrix(matrix[:rowPivot][:colPivot], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
+	} else {
+		return searchMatrix(matrix[rowPivot:][colPivot:], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
+	}
+	// return false
 }
 
-func SearchMatrixUtil(matrix [][]int, row int, col int, target int) bool {
+// func SearchMatrixUtil(matrix [][]int, row int, col int, target int) bool {
+// 	return false
+// }
 
+func SearchMatrixImplement() {
+	matrix := [][]int{
+		{1, 4, 7, 11, 15},
+		{2, 5, 8, 12, 19},
+		{3, 6, 9, 16, 22},
+		{10, 13, 14, 17, 24},
+		{18, 21, 23, 26, 30},
+	}
+	log.Println("search", searchMatrix(matrix, 5))
 }
