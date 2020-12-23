@@ -90,20 +90,37 @@ func searchMatrix(matrix [][]int, target int) bool {
 	if col <= 0 {
 		return false
 	}
-	colPivot, rowPivot := col/2, row/2
-	if matrix[rowPivot][colPivot] == target {
-		return true
-	} else if target < matrix[rowPivot][colPivot] {
-		return searchMatrix(matrix[:rowPivot][:colPivot], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
-	} else {
-		return searchMatrix(matrix[rowPivot:][colPivot:], target) || searchMatrix(matrix[rowPivot:][:colPivot], target) || searchMatrix(matrix[:rowPivot][colPivot:], target)
-	}
-	// return false
+	return SearchMatrixUtil(matrix, 0, row, 0, col, target)
+	// colPivot, rowPivot := col/2, row/2
+	// // topLeft := matrix[:rowPivot][:colPivot]
+	// // botRight := matrix[rowPivot:][colPivot:]
+	// if matrix[rowPivot][colPivot] == target {
+	// 	log.Println("match")
+	// 	return true
+	// } else if target < matrix[rowPivot][colPivot] {
+	// 	return searchMatrix(matrix[:rowPivot][:colPivot], target)
+	// } else {
+	// 	log.Println("above")
+	// 	return searchMatrix(matrix[rowPivot:][colPivot:], target)
+	// }
+	// // return false
 }
 
-// func SearchMatrixUtil(matrix [][]int, row int, col int, target int) bool {
-// 	return false
-// }
+func SearchMatrixUtil(matrix [][]int, rowStart int, rowEnd int, colStart int, colEnd int, target int) bool {
+	rowPivot, colPivot := (rowEnd-rowStart)/2, (colEnd-colStart)/2
+	// topLeft := matrix[rowStart:rowPivot][:colPivot]
+	// botRight := matrix[rowPivot:][colPivot:]
+	if matrix[rowPivot][colPivot] == target {
+		log.Println("match")
+		return true
+	} else if target < matrix[rowPivot][colPivot] {
+		return searchMatrix(matrix[:rowPivot][:colPivot], target)
+	} else if target > matrix[rowPivot][colPivot] {
+		log.Println("above")
+		return searchMatrix(matrix[rowPivot:][colPivot:], target)
+	}
+	return false
+}
 
 func SearchMatrixImplement() {
 	matrix := [][]int{
@@ -113,5 +130,11 @@ func SearchMatrixImplement() {
 		{10, 13, 14, 17, 24},
 		{18, 21, 23, 26, 30},
 	}
+	twotwo := [][]int{}
+	rows := matrix[:2]
+	for _, r := range rows {
+		twotwo = append(twotwo, r[:2])
+	}
+	log.Println("con heo", twotwo)
 	log.Println("search", searchMatrix(matrix, 5))
 }
