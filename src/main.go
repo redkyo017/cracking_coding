@@ -6,7 +6,8 @@ import (
 	// "cracking_coding/leet_code"
 	// "cracking_coding/hackerrank"
 
-	"leet_code_explore"
+	// "leet_code_explore"
+	"hackerrank"
 	"log"
 	"time"
 )
@@ -51,7 +52,7 @@ func main() {
 	// recursion_dp.PaintFill()
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
-	leet_code_explore.SearchMatrixImplement()
+	hackerrank.FindSmallestDivisorImplement()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
