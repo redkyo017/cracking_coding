@@ -136,5 +136,5 @@ func SearchMatrixImplement() {
 		twotwo = append(twotwo, r[:2])
 	}
 	log.Println("con heo", twotwo)
-	log.Println("search", searchMatrix(matrix, 5))
+	// log.Println("search", searchMatrix(matrix, 5))
 }
