@@ -160,6 +160,28 @@ func SearchMatrixImplement() {
 //             remove(next_candidate)
 
 func totalNQueens(n int) int {
-
+	chessTable := [][]bool{}
+	for i := 0; i < n; i++ {
+		row := []bool{}
+		for j := 0; j < n; j++ {
+			row = append(row, false)
+		}
+		chessTable = append(chessTable, row)
+	}
+	log.Println("con co be be", chessTable)
 	return 0
+}
+func placeQueen(table *[][]bool, row int, col int) int {
+	return 0
+}
+func isValidCell(table *[][]bool, row int, col int) bool {
+	return false
+}
+func removeQueen(table *[][]bool, row int, col int) {
+
+}
+
+func TotalQueenImplement() {
+	n := 8
+	log.Println("total queens", totalNQueens(n))
 }
