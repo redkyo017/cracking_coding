@@ -90,51 +90,55 @@ func searchMatrix(matrix [][]int, target int) bool {
 	if col <= 0 {
 		return false
 	}
-	return SearchMatrixUtil(matrix, 0, row, 0, col, target)
-	// colPivot, rowPivot := col/2, row/2
-	// // topLeft := matrix[:rowPivot][:colPivot]
-	// // botRight := matrix[rowPivot:][colPivot:]
-	// if matrix[rowPivot][colPivot] == target {
-	// 	log.Println("match")
-	// 	return true
-	// } else if target < matrix[rowPivot][colPivot] {
-	// 	return searchMatrix(matrix[:rowPivot][:colPivot], target)
-	// } else {
-	// 	log.Println("above")
-	// 	return searchMatrix(matrix[rowPivot:][colPivot:], target)
-	// }
-	// // return false
-}
-
-func SearchMatrixUtil(matrix [][]int, rowStart int, rowEnd int, colStart int, colEnd int, target int) bool {
-	rowPivot, colPivot := (rowEnd-rowStart)/2, (colEnd-colStart)/2
-	// topLeft := matrix[rowStart:rowPivot][:colPivot]
-	// botRight := matrix[rowPivot:][colPivot:]
+	rowPivot, colPivot := row/2, col/2
+	if rowPivot == 0 && colPivot == 0 && matrix[rowPivot][colPivot] != target {
+		return false
+	}
+	top := matrix[:rowPivot]
+	bottom := matrix[rowPivot:]
 	if matrix[rowPivot][colPivot] == target {
-		log.Println("match")
 		return true
-	} else if target < matrix[rowPivot][colPivot] {
-		return searchMatrix(matrix[:rowPivot][:colPivot], target)
-	} else if target > matrix[rowPivot][colPivot] {
-		log.Println("above")
-		return searchMatrix(matrix[rowPivot:][colPivot:], target)
+	}
+	topRight, bottomLeft := [][]int{}, [][]int{}
+	if target < matrix[rowPivot][colPivot] {
+		topLeft := [][]int{}
+		for _, t := range top {
+			topLeft = append(topLeft, t[:colPivot])
+			topRight = append(topRight, t[colPivot:])
+		}
+		for _, b := range bottom {
+			bottomLeft = append(bottomLeft, b[:colPivot])
+		}
+		return searchMatrix(topLeft, target) || searchMatrix(topRight, target) || searchMatrix(bottomLeft, target)
+	}
+	if target > matrix[rowPivot][colPivot] {
+		bottomRight := [][]int{}
+		for _, t := range top {
+			topRight = append(topRight, t[colPivot:])
+		}
+		for _, b := range bottom {
+			bottomLeft = append(bottomLeft, b[:colPivot])
+			bottomRight = append(bottomRight, b[colPivot:])
+		}
+		return searchMatrix(bottomRight, target) || searchMatrix(topRight, target) || searchMatrix(bottomLeft, target)
 	}
 	return false
 }
 
 func SearchMatrixImplement() {
+	// matrix := [][]int{
+	// 	{1, 4, 7, 11, 15},
+	// 	{2, 5, 8, 12, 19},
+	// 	{3, 6, 9, 16, 22},
+	// 	{10, 13, 14, 17, 24},
+	// 	{18, 21, 23, 26, 30},
+	// }
+	// matrix := [][]int{
+	// 	{-1, 3},
+	// }
 	matrix := [][]int{
-		{1, 4, 7, 11, 15},
-		{2, 5, 8, 12, 19},
-		{3, 6, 9, 16, 22},
-		{10, 13, 14, 17, 24},
-		{18, 21, 23, 26, 30},
+		{5},
+		{6},
 	}
-	twotwo := [][]int{}
-	rows := matrix[:2]
-	for _, r := range rows {
-		twotwo = append(twotwo, r[:2])
-	}
-	log.Println("con heo", twotwo)
-	// log.Println("search", searchMatrix(matrix, 5))
+	log.Println("search", searchMatrix(matrix, 5))
 }
