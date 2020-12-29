@@ -171,16 +171,30 @@ func totalNQueens(n int) int {
 	log.Println("con co be be", chessTable)
 	return 0
 }
-func placeQueen(table *[][]bool, row int, col int) int {
-	return 0
+func placeQueen(table *[][]bool, row int, col int) {
+	(*table)[row][col] = true
 }
 func isValidCell(table *[][]bool, row int, col int) bool {
-	return false
+	n := len(*table)
+	if (*table)[row][col] == false {
+		return false
+	}
+	// row
+	for i := 0; i < n; i++ {
+	}
+	// col
+	for i := 0; i < n; i++ {
+	}
+	// diagonal
+	return true
 }
 func removeQueen(table *[][]bool, row int, col int) {
-
+	(*table)[row][col] = false
 }
 
+func backtrackQueen(table *[][]bool, row int, col int, count *int) {
+
+}
 func TotalQueenImplement() {
 	n := 8
 	log.Println("total queens", totalNQueens(n))
