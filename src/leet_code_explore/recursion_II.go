@@ -168,20 +168,11 @@ func totalNQueens(n int) int {
 		}
 		chessTable = append(chessTable, row)
 	}
-	log.Println("con ga", chessTable)
 	var count int
-	// for i := 0; i < n; i++ {
 	backtrackQueen(&chessTable, 0, &count)
-	// }
-	log.Println("con co be be", count)
 	return count
 }
-func placeQueen(table *[][]bool, row int, col int) {
-	(*table)[row][col] = true
-}
-func removeQueen(table *[][]bool, row int, col int) {
-	(*table)[row][col] = false
-}
+
 func isValidCell(table *[][]bool, row int, col int) bool {
 	if (*table)[row][col] == true {
 		return false
@@ -189,13 +180,16 @@ func isValidCell(table *[][]bool, row int, col int) bool {
 	n := len(*table)
 	for i := 0; i < n; i++ {
 		// row & col
-		if (*table)[i][col] == true || (*table)[row][i] == true {
+		if ((*table)[i][col] == true) || ((*table)[row][i] == true) {
 			return false
 		}
-		// diagonal
-		rowDistance := int(math.Abs(float64(row) - float64(i)))
-		colDistance := int(math.Abs(float64(col) - float64(i)))
-		if rowDistance == colDistance {
+	}
+	// diagonal
+	for i := 0; i <= col; i++ {
+		top := row - i
+		bot := row + i
+		prevCol := col - i
+		if (top >= 0 && (*table)[top][prevCol] == true) || (bot < n && (*table)[bot][prevCol] == true) {
 			return false
 		}
 	}
@@ -204,19 +198,24 @@ func isValidCell(table *[][]bool, row int, col int) bool {
 
 func backtrackQueen(table *[][]bool, col int, count *int) {
 	n := len(*table)
-	if col == n-1 {
+	if col == n {
+		// log.Println("con co be be", table)
 		(*count)++
 		return
 	}
 	for i := 0; i < n; i++ {
 		if isValidCell(table, i, col) {
-			placeQueen(table, i, col)
+			(*table)[i][col] = true
 			backtrackQueen(table, col+1, count)
-			removeQueen(table, i, col)
+			(*table)[i][col] = false
 		}
 	}
 }
 func TotalQueenImplement() {
-	n := 4
+	n := 8
 	log.Println("total queens", totalNQueens(n))
+}
+
+func solveSudoku(board [][]byte) {
+
 }
