@@ -52,7 +52,7 @@ func main() {
 	// log.Println(recursion_dp.MakeChange(1000))
 	// sort_search.ImplementSortMerged()
 	// recursion_dp.EightQueen()
-	leet_code_explore.TotalQueenImplement()
+	leet_code_explore.SolveSudokuImplement()
 	elapsed := time.Since(start)
 	log.Printf("Solution took %s", elapsed)
 }
