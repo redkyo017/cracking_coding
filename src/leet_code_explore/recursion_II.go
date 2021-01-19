@@ -1,8 +1,10 @@
 package leet_code_explore
 
 import (
+	"fmt"
 	"log"
 	"math"
+	"strconv"
 )
 
 // DEVIDE AND CONQUER
@@ -242,14 +244,32 @@ func TotalQueenImplement() {
 // board[i].length == 9
 // board[i][j] is a digit or '.'
 func solveSudoku(board [][]byte) {
-	for i := 0; i < len(board); i++ {
-		row := board[i]
-		for j, v := range row {
-			if v == '.' {
-				log.Println("empty", i, j)
-			}
-		}
+	// for i := 0; i < len(board); i++ {
+	// 	row := board[i]
+	// 	for j, v := range row {
+	// 		if v == '.' {
+	// 			// log.Println("empty", i, j)
+	// 			val := 0
+	// 			board[i][j] = numToByte(val)
+	// 			continue
+	// 		}
+	// 	}
+	// }
+	backtrackSudoku(&board, 0)
+}
+func numToByte(n int) byte {
+	numChar := fmt.Sprintf("%d", n)
+	return []byte(numChar)[0]
+}
+func byteToInt(c byte) int {
+	num, _ := strconv.Atoi(string(c))
+	return num
+}
+func backtrackSudoku(board *[][]byte, row int) {
+	if row == 9 {
+		return
 	}
+	// consider next box
 }
 
 func SolveSudokuImplement() {
@@ -265,4 +285,10 @@ func SolveSudokuImplement() {
 		[]byte("....8..79"),
 	}
 	solveSudoku(board)
+	for _, rows := range board {
+		log.Println(string(rows))
+		// for _, num := range rows {
+		// 	log.Println(num)
+		// }
+	}
 }
