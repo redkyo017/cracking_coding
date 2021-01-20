@@ -243,18 +243,56 @@ func TotalQueenImplement() {
 // board.length == 9
 // board[i].length == 9
 // board[i][j] is a digit or '.'
+
 func solveSudoku(board [][]byte) {
-	// for i := 0; i < len(board); i++ {
-	// 	row := board[i]
-	// 	for j, v := range row {
-	// 		if v == '.' {
-	// 			// log.Println("empty", i, j)
-	// 			val := 0
-	// 			board[i][j] = numToByte(val)
-	// 			continue
-	// 		}
-	// 	}
-	// }
+	boxValuesMaps := [9]map[int]bool{}
+	boxMaps := map[string]int{}
+	for i := 0; i < len(board); i++ {
+		row := board[i]
+		for j, v := range row {
+			if v == '.' {
+				continue
+			}
+			num := byteToInt(v)
+			pos := fmt.Sprintf("%d-%d", i, j)
+			if i < 3 && j < 3 {
+				boxMaps[pos] = 0
+				boxValuesMaps[0][num] = true
+			}
+			if i < 3 && j > 2 && j < 6 {
+				boxMaps[pos] = 1
+				boxValuesMaps[1][num] = true
+			}
+			if i < 3 && j > 5 {
+				boxMaps[pos] = 2
+				boxValuesMaps[2][num] = true
+			}
+			if i > 2 && i < 6 && j < 3 {
+				boxMaps[pos] = 3
+				boxValuesMaps[3][num] = true
+			}
+			if i > 2 && i < 6 && j > 2 && j < 6 {
+				boxMaps[pos] = 4
+				boxValuesMaps[4][num] = true
+			}
+			if i > 2 && i < 6 && j > 5 {
+				boxMaps[pos] = 5
+				boxValuesMaps[5][num] = true
+			}
+			if i > 5 && j < 3 {
+				boxMaps[pos] = 6
+				boxValuesMaps[6][num] = true
+			}
+			if i > 5 && j > 2 && j < 6 {
+				boxMaps[pos] = 7
+				boxValuesMaps[7][num] = true
+			}
+			if i > 5 && j > 5 {
+				boxMaps[pos] = 8
+				boxValuesMaps[8][num] = true
+			}
+		}
+	}
 	backtrackSudoku(&board, 0)
 }
 func numToByte(n int) byte {
@@ -265,11 +303,27 @@ func byteToInt(c byte) int {
 	num, _ := strconv.Atoi(string(c))
 	return num
 }
-func backtrackSudoku(board *[][]byte, row int) {
-	if row == 9 {
+func isValid(board *[][]byte, row int, col int, num int) bool {
+	if (*board)[row][col] != '.' {
+		return false
+	}
+	return true
+}
+func backtrackSudoku(board *[][]byte, col int) {
+	if col == 9 {
 		return
 	}
-	// consider next box
+	// consider next candidate
+	for i := 0; i < 9; i++ {
+		for j := 1; j <= 9; j++ {
+			if isValid(board, col, i, j) {
+				(*board)[i][col] = numToByte(j)
+				backtrackSudoku(board, col+1)
+			} else {
+				(*board)[i][col] = byte('.')
+			}
+		}
+	}
 }
 
 func SolveSudokuImplement() {
@@ -285,10 +339,4 @@ func SolveSudokuImplement() {
 		[]byte("....8..79"),
 	}
 	solveSudoku(board)
-	for _, rows := range board {
-		log.Println(string(rows))
-		// for _, num := range rows {
-		// 	log.Println(num)
-		// }
-	}
 }
