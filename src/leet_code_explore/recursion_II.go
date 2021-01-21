@@ -245,57 +245,9 @@ func TotalQueenImplement() {
 // board[i][j] is a digit or '.'
 
 func solveSudoku(board [][]byte) {
-	boxValuesMaps := [9]map[int]bool{}
-	boxMaps := map[string]int{}
-	for i := 0; i < len(board); i++ {
-		row := board[i]
-		for j, v := range row {
-			if v == '.' {
-				continue
-			}
-			num := byteToInt(v)
-			pos := fmt.Sprintf("%d-%d", i, j)
-			if i < 3 && j < 3 {
-				boxMaps[pos] = 0
-				boxValuesMaps[0][num] = true
-			}
-			if i < 3 && j > 2 && j < 6 {
-				boxMaps[pos] = 1
-				boxValuesMaps[1][num] = true
-			}
-			if i < 3 && j > 5 {
-				boxMaps[pos] = 2
-				boxValuesMaps[2][num] = true
-			}
-			if i > 2 && i < 6 && j < 3 {
-				boxMaps[pos] = 3
-				boxValuesMaps[3][num] = true
-			}
-			if i > 2 && i < 6 && j > 2 && j < 6 {
-				boxMaps[pos] = 4
-				boxValuesMaps[4][num] = true
-			}
-			if i > 2 && i < 6 && j > 5 {
-				boxMaps[pos] = 5
-				boxValuesMaps[5][num] = true
-			}
-			if i > 5 && j < 3 {
-				boxMaps[pos] = 6
-				boxValuesMaps[6][num] = true
-			}
-			if i > 5 && j > 2 && j < 6 {
-				boxMaps[pos] = 7
-				boxValuesMaps[7][num] = true
-			}
-			if i > 5 && j > 5 {
-				boxMaps[pos] = 8
-				boxValuesMaps[8][num] = true
-			}
-		}
-	}
-	backtrackSudoku(&board, 0)
+	backtrackSudoku(&board, 0, 0)
 }
-func numToByte(n int) byte {
+func intToByte(n int) byte {
 	numChar := fmt.Sprintf("%d", n)
 	return []byte(numChar)[0]
 }
@@ -304,26 +256,48 @@ func byteToInt(c byte) int {
 	return num
 }
 func isValid(board *[][]byte, row int, col int, num int) bool {
-	if (*board)[row][col] != '.' {
-		return false
-	}
-	return true
-}
-func backtrackSudoku(board *[][]byte, col int) {
-	if col == 9 {
-		return
-	}
-	// consider next candidate
+	numByte := intToByte(num)
 	for i := 0; i < 9; i++ {
-		for j := 1; j <= 9; j++ {
-			if isValid(board, col, i, j) {
-				(*board)[i][col] = numToByte(j)
-				backtrackSudoku(board, col+1)
-			} else {
-				(*board)[i][col] = byte('.')
+		if (*board)[row][i] == numByte || (*board)[i][col] == numByte {
+			return false
+		}
+	}
+	startRow := row - (row % 3)
+	startCol := col - (col % 3)
+
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if (*board)[i+startRow][j+startCol] == numByte {
+				return false
 			}
 		}
 	}
+	return true
+}
+func backtrackSudoku(board *[][]byte, row int, col int) bool {
+	if col == 9 && row == 8 {
+		return true
+	}
+	// consider next candidate
+	if col == 9 {
+		col = 0
+		row++
+	}
+
+	if (*board)[row][col] != '.' {
+		return backtrackSudoku(board, row, col+1)
+	}
+
+	for i := 1; i <= 9; i++ {
+		if isValid(board, row, col, i) {
+			(*board)[row][col] = intToByte(i)
+			if backtrackSudoku(board, row, col+1) {
+				return true
+			}
+		}
+		(*board)[row][col] = '.'
+	}
+	return false
 }
 
 func SolveSudokuImplement() {
@@ -337,6 +311,60 @@ func SolveSudokuImplement() {
 		[]byte(".6....28."),
 		[]byte("...419..5"),
 		[]byte("....8..79"),
+
+		// []byte("..9748..."),
+		// []byte("7........"),
+		// []byte(".2.1.9..."),
+		// []byte("..7...24."),
+		// []byte(".64.1.59."),
+		// []byte(".98...3.."),
+		// []byte("...8.3.2."),
+		// []byte("........6"),
+		// []byte("...2759.."),
 	}
 	solveSudoku(board)
+	for _, rows := range board {
+		log.Println(string(rows))
+	}
+}
+
+// [
+// 	[".",".","9","7","4","8",".",".","."],
+// 	["7",".",".",".",".",".",".",".","."],
+// 	[".","2",".","1",".","9",".",".","."],
+// 	[".",".","7",".",".",".","2","4","."],
+// 	[".","6","4",".","1",".","5","9","."],
+// 	[".","9","8",".",".",".","3",".","."],
+// 	[".",".",".","8",".","3",".","2","."],
+// 	[".",".",".",".",".",".",".",".","6"],
+// 	[".",".",".","2","7","5","9",".","."]
+// ]
+
+// [
+// 	["3","1","9","7","4","8","6","5","2"],
+// 	["7","4","3","6","5","2","1","8","9"],
+// 	["6","2","5","1","3","9","8","7","4"],
+// 	["5","3","7","9","8","6","2","4","1"],
+// 	["2","6","4","3","1","7","5","9","8"],
+// 	["1","9","8","5","2","4","3","6","7"],
+// 	["9","7","1","8","6","3","4","2","5"],
+// 	["8","5","2","4","9","1","7","3","6"],
+// 	["4","8","6","2","7","5","9","1","3"]
+// ]
+
+// [
+// 	["5","1","9","7","4","8","6","3","2"],
+// 	["7","8","3","6","5","2","4","1","9"],
+// 	["4","2","6","1","3","9","8","7","5"],
+// 	["3","5","7","9","8","6","2","4","1"],
+// 	["2","6","4","3","1","7","5","9","8"],
+// 	["1","9","8","5","2","4","3","6","7"],
+// 	["9","7","5","8","6","3","1","2","4"],
+// 	["8","3","2","4","9","1","7","5","6"],
+// 	["6","4","1","2","7","5","9","8","3"]
+// ]
+
+func combine(n int, k int) [][]int {
+	res := [][]int{}
+	return res
 }
