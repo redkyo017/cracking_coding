@@ -364,7 +364,30 @@ func SolveSudokuImplement() {
 // 	["6","4","1","2","7","5","9","8","3"]
 // ]
 
+func CombineImplement() {
+	n, k := 4, 2
+	res := combine(n, k)
+	// for _, v := range res {
+	log.Println(res)
+	// }
+}
+
 func combine(n int, k int) [][]int {
 	res := [][]int{}
+	backtrackCombine(&res, []int{}, k, n, 1)
 	return res
+}
+
+func backtrackCombine(combinations *[][]int, combination []int, combinationLen int, numLen int, currentNum int) {
+	if len(combination) == combinationLen {
+		(*combinations) = append((*combinations), combination)
+		return
+	}
+	for i := currentNum; i <= numLen; i++ {
+		var combs []int
+		combs = append(combs, combination...)
+		combs = append(combs, i)
+		combination = append(combination, i)
+		backtrackCombine(combinations, combination, combinationLen, numLen, i+1)
+	}
 }
